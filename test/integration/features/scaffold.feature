@@ -25,5 +25,12 @@ Feature: Scaffolder
     Given the source code is hosted on "foo"
     And the project visibility is "Public"
     When the project is scaffolded
-    Then the coverage badge will be not defined
+    Then the coverage badge will not be defined
     And the reporting steps are defined
+
+  Scenario: Scaffold a private project hosted on GitHub
+    Given the source code is hosted on "github"
+    And the project visibility is "Private"
+    When the project is scaffolded
+    Then the coverage badge will not be defined
+    And the reporting steps are not defined
