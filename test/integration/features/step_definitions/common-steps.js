@@ -1,6 +1,7 @@
 import {resolve} from 'path';
 import {After, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
+import any from '@travi/any';
 
 const stubbedNodeModules = stubbedFs.load(resolve(__dirname, '..', '..', '..', '..', 'node_modules'));
 
@@ -16,5 +17,11 @@ When('the project is scaffolded', async function () {
     node_modules: stubbedNodeModules
   });
 
-  await scaffold({projectRoot: process.cwd()});
+  this.vcsName = any.word();
+  this.vcsOwner = any.word();
+
+  this.scaffoldResult = await scaffold({
+    vcs: {host: this.vcsHost, owner: this.vcsOwner, name: this.vcsName},
+    visibility: this.visibility
+  });
 });
