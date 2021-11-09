@@ -13,3 +13,9 @@ Then('the coverage badge will be defined', async function () {
     }
   );
 });
+
+Then('the coverage badge will be not defined', async function () {
+  const {badges} = this.scaffoldResult;
+
+  assert.isUndefined(badges);
+});

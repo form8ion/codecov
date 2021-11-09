@@ -20,3 +20,10 @@ Feature: Scaffolder
     When the project is scaffolded
     Then the coverage badge will be defined
     And the reporting steps are defined
+
+  Scenario: Scaffold a project hosted on a service not supported by the shields.io badge
+    Given the source code is hosted on "foo"
+    And the project visibility is "Public"
+    When the project is scaffolded
+    Then the coverage badge will be not defined
+    And the reporting steps are defined
