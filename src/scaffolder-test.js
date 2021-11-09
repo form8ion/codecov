@@ -1,6 +1,6 @@
 import any from '@travi/any';
 import {assert} from 'chai';
-import {scaffold} from './codecov';
+import {scaffold} from './scaffolder';
 
 suite('codecov', () => {
   test('that codecov details are scaffolded', () => {
