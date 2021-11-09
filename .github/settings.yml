@@ -1,0 +1,6 @@
+_extends: .github
+repository:
+  name: codecov
+  description: code coverage service plugin for form8ion
+  homepage: https://npm.im/@form8ion/codecov
+  private: false
