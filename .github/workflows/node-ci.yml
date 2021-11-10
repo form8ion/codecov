@@ -25,9 +25,6 @@ jobs:
           - 16
     steps:
       - uses: actions/checkout@v2
-      - name: Read .nvmrc
-        run: echo ::set-output vcsName=NVMRC::$(cat .nvmrc)
-        id: nvm
       - name: Setup node
         uses: actions/setup-node@v2
         with:
