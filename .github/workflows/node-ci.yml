@@ -28,8 +28,8 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
+          cache: npm
           node-version: ${{ matrix.node }}
-      - uses: bahmutov/npm-install@v1
       - run: npm test
       - name: Upload coverage data to Codecov
         run: npm run coverage:report
@@ -41,8 +41,8 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
+          cache: npm
           node-version: lts/*
-      - uses: bahmutov/npm-install@v1
       - name: semantic-release
         run: npx semantic-release
         env:
