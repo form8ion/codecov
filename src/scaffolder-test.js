@@ -1,46 +1,40 @@
 import any from '@travi/any';
 import {assert} from 'chai';
+import sinon from 'sinon';
+import * as reporter from './reporter';
+import * as badge from './badge';
 import {scaffold} from './scaffolder';
 
 suite('codecov', () => {
+  let sandbox;
+
+  setup(() => {
+    sandbox = sinon.createSandbox();
+
+    sandbox.stub(reporter, 'scaffold');
+    sandbox.stub(badge, 'scaffold');
+  });
+
+  teardown(() => sandbox.restore());
+
   test('that codecov details are scaffolded', () => {
     const vcsHost = any.fromList(['github', 'gitlab', 'bitbucket']);
     const vcsOwner = any.word();
     const vcsName = any.word();
-    const vcs = {...any.simpleObject(), host: vcsHost, owner: vcsOwner, name: vcsName};
+    const vcs = {
+      ...any.simpleObject(),
+      host: vcsHost,
+      owner: vcsOwner,
+      name: vcsName
+    };
+    const reporterResults = any.simpleObject();
+    const badgeResults = any.simpleObject();
+    reporter.scaffold.returns(reporterResults);
+    badge.scaffold.returns(badgeResults);
 
-    const {badges, devDependencies, scripts} = scaffold({vcs, visibility: 'Public'});
+    const results = scaffold({vcs, visibility: 'Public'});
 
-    assert.deepEqual(devDependencies, ['codecov']);
-    assert.equal(scripts['coverage:report'], 'c8 report --reporter=text-lcov > coverage.lcov && codecov');
-    assert.deepEqual(
-      badges,
-      {
-        status: {
-          coverage: {
-            img: `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}.svg`,
-            link: `https://codecov.io/${vcsHost}/${vcsOwner}/${vcsName}`,
-            text: 'Codecov'
-          }
-        }
-      }
-    );
-  });
-
-  test('that the badge is not defined if shields.io badge does not support the vcs host', () => {
-    const {badges, devDependencies, scripts} = scaffold({visibility: 'Public', vcs: {host: any.word()}});
-
-    assert.isUndefined(badges);
-    assert.deepEqual(devDependencies, ['codecov']);
-    assert.equal(scripts['coverage:report'], 'c8 report --reporter=text-lcov > coverage.lcov && codecov');
-  });
-
-  test('that the badge is not defined if vcs details are not defined', () => {
-    const {badges, devDependencies, scripts} = scaffold({visibility: 'Public'});
-
-    assert.isUndefined(badges);
-    assert.deepEqual(devDependencies, ['codecov']);
-    assert.equal(scripts['coverage:report'], 'c8 report --reporter=text-lcov > coverage.lcov && codecov');
+    assert.deepEqual(results, {...reporterResults, ...badgeResults});
   });
 
   test('that details are not defined if the project is private', () => {
