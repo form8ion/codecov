@@ -30,6 +30,7 @@ jobs:
         with:
           cache: npm
           node-version: ${{ matrix.node }}
+      - run: npm clean-install
       - run: npm test
       - name: Upload coverage data to Codecov
         run: npm run coverage:report
@@ -43,6 +44,7 @@ jobs:
         with:
           cache: npm
           node-version: lts/*
+      - run: npm clean-install
       - name: semantic-release
         run: npx semantic-release
         env:
