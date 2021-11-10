@@ -14,6 +14,12 @@ code coverage service plugin for form8ion
 * [Usage](#usage)
   * [Installation](#installation)
   * [Example](#example)
+    * [Import](#import)
+    * [Execute](#execute)
+  * [API](#api)
+    * [scaffold](#scaffold)
+      * [`vcs` __object__ (_required_)](#vcs-object-required)
+      * [`visibility` __string__ (_required_)](#visibility-string-required)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -36,9 +42,48 @@ $ npm install @form8ion/codecov --save
 
 ### Example
 
+#### Import
+
 ```javascript
-import codecov from '@form8ion/codecov';
+import {scaffold} from './lib/index.cjs';
 ```
+
+#### Execute
+
+```javascript
+(async () => {
+  await scaffold({
+    visibility: 'Public',
+    vcs: {
+      host: 'github',
+      owner: 'foo',
+      name: 'bar'
+    }
+  });
+})();
+```
+
+### API
+
+#### scaffold
+
+Scaffolder for configuring reporting of coverage data to [Codecov](https://codecov.io/)
+and providing visibility to the current coverage status through a README badge
+
+Takes a single options object as an argument, containing:
+
+##### `vcs` __object__ (_required_)
+
+* `host` __string__ (_required_)
+  VCS hosting service
+* `owner` __string__ (_required_)
+  account name on the host service for the repository
+* `name` __string__ (_required_)
+  repository name
+
+##### `visibility` __string__ (_required_)
+
+visibility of the project (`Public` or `Private`)
 
 ## Contributing
 
