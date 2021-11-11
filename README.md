@@ -20,6 +20,7 @@ code coverage service plugin for form8ion
     * [scaffold](#scaffold)
       * [`vcs` __object__ (_required_)](#vcs-object-required)
       * [`visibility` __string__ (_required_)](#visibility-string-required)
+      * [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -60,6 +61,16 @@ import {scaffold} from './lib/index.cjs';
       name: 'bar'
     }
   });
+
+  await scaffold({
+    visibility: 'Private',
+    vcs: {
+      host: 'github',
+      owner: 'foo',
+      name: 'bar'
+    },
+    apiAccessToken: 'XXXXXX'
+  });
 })();
 ```
 
@@ -83,7 +94,16 @@ Takes a single options object as an argument, containing:
 
 ##### `visibility` __string__ (_required_)
 
-visibility of the project (`Public` or `Private`)
+Visibility of the project (`Public` or `Private`).
+Unless [`apiAccessToken`](#apiaccesstoken-string-optional) is provided, Codecov
+details will only be scaffolded for public projects.
+
+##### `apiAccessToken` __string__ (_optional_)
+
+Personal Access Token for accessing the [Codecov API](https://docs.codecov.com/reference).
+Providing an access token enables [fetching the `image_token` for the repository](https://docs.codecov.com/reference/repositories#get-a-single-repository)
+so that the coverage badge can display the proper coverage state of the
+project.
 
 ## Contributing
 

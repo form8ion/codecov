@@ -17,4 +17,14 @@ stubbedFs();
       name: 'bar'
     }
   });
+
+  await scaffold({
+    visibility: 'Private',
+    vcs: {
+      host: 'github',
+      owner: 'foo',
+      name: 'bar'
+    },
+    apiAccessToken: 'XXXXXX'
+  });
 })();
