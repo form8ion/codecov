@@ -1,11 +1,11 @@
 import {scaffold as scaffoldReporter} from './reporter';
 import {scaffold as scaffoldBadge} from './badge';
 
-export function scaffold({vcs, visibility}) {
-  if ('Public' !== visibility) return {};
+export async function scaffold({vcs, visibility, apiAccessToken}) {
+  if ('Public' !== visibility && !apiAccessToken) return {};
 
   return {
     ...scaffoldReporter(),
-    ...scaffoldBadge({vcs})
+    ...await scaffoldBadge({vcs, ...apiAccessToken && {apiAccessToken}})
   };
 }

@@ -1,12 +1,22 @@
 import {resolve} from 'path';
-import {After, When} from '@cucumber/cucumber';
+import {After, Before, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import any from '@travi/any';
+import nock from 'nock';
 
 const stubbedNodeModules = stubbedFs.load(resolve(__dirname, '..', '..', '..', '..', 'node_modules'));
 
+Before(function () {
+  this.vcsName = any.word();
+  this.vcsOwner = any.word();
+
+  nock.disableNetConnect();
+});
+
 After(function () {
   stubbedFs.restore();
+  nock.enableNetConnect();
+  nock.cleanAll();
 });
 
 When('the project is scaffolded', async function () {
@@ -17,11 +27,9 @@ When('the project is scaffolded', async function () {
     node_modules: stubbedNodeModules
   });
 
-  this.vcsName = any.word();
-  this.vcsOwner = any.word();
-
   this.scaffoldResult = await scaffold({
     vcs: {host: this.vcsHost, owner: this.vcsOwner, name: this.vcsName},
-    visibility: this.visibility
+    visibility: this.visibility,
+    apiAccessToken: this.apiToken
   });
 });
