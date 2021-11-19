@@ -103,7 +103,10 @@ details will only be scaffolded for public projects.
 Personal Access Token for accessing the [Codecov API](https://docs.codecov.com/reference).
 Providing an access token enables [fetching the `image_token` for the repository](https://docs.codecov.com/reference/repositories#get-a-single-repository)
 so that the coverage badge can display the proper coverage state of the
-project.
+project when the project is not public.
+Since the [Codecov API](https://docs.codecov.com/reference) appears to only
+support GitHub at the time of this implementation, GitHub is the only VCS host
+supported by this scaffolder at this time.
 
 ## Contributing
 

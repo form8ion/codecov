@@ -1,6 +1,7 @@
 import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
+import * as predicates from './predicates';
 import * as reporter from './reporter';
 import * as badge from './badge';
 import {scaffold} from './scaffolder';
@@ -16,6 +17,8 @@ suite('codecov', () => {
     owner: vcsOwner,
     name: vcsName
   };
+  const visibility = any.word();
+  const apiAccessToken = any.word();
   const reporterResults = any.simpleObject();
   const badgeResults = any.simpleObject();
 
@@ -24,30 +27,25 @@ suite('codecov', () => {
 
     sandbox.stub(reporter, 'scaffold');
     sandbox.stub(badge, 'scaffold');
+    sandbox.stub(predicates, 'coverageShouldBeReportedToCodecov');
+
+    predicates.coverageShouldBeReportedToCodecov.withArgs({vcs, visibility, apiAccessToken}).returns(true);
   });
 
   teardown(() => sandbox.restore());
 
   test('that codecov details are scaffolded', async () => {
     reporter.scaffold.returns(reporterResults);
-    badge.scaffold.withArgs({vcs}).returns(badgeResults);
-
-    const results = await scaffold({vcs, visibility: 'Public'});
-
-    assert.deepEqual(results, {...reporterResults, ...badgeResults});
-  });
-
-  test('that details are not defined if the project is private', async () => {
-    assert.deepEqual(await scaffold({visibility: 'Private'}), {});
-  });
-
-  test('that codecov details are scaffolded for private projects when an api access token is provided', async () => {
-    const apiAccessToken = any.word();
-    reporter.scaffold.returns(reporterResults);
     badge.scaffold.withArgs({vcs, apiAccessToken}).returns(badgeResults);
 
-    const results = await scaffold({vcs, visibility: 'Private', apiAccessToken});
+    const results = await scaffold({vcs, visibility, apiAccessToken});
 
     assert.deepEqual(results, {...reporterResults, ...badgeResults});
+  });
+
+  test('that details are not defined if coverage should not be reported', async () => {
+    predicates.coverageShouldBeReportedToCodecov.withArgs({vcs, visibility, apiAccessToken}).returns(false);
+
+    assert.deepEqual(await scaffold({vcs, visibility, apiAccessToken}), {});
   });
 });
