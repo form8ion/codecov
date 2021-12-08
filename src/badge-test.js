@@ -30,7 +30,7 @@ suite('badge', () => {
     assert.deepEqual(
       badges.status.coverage,
       {
-        img: `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}.svg`,
+        img: `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}?logo=codecov`,
         link: `https://codecov.io/${vcsHost}/${vcsOwner}/${vcsName}`,
         text: 'Codecov'
       }
@@ -46,7 +46,7 @@ suite('badge', () => {
 
     assert.deepEqual(
       badges.status.coverage.img,
-      `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}.svg?token=${token}`
+      `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}?logo=codecov&token=${token}`
     );
   });
 

@@ -6,9 +6,9 @@ export async function scaffold({vcs, apiAccessToken}) {
       badges: {
         status: {
           coverage: {
-            img: `https://img.shields.io/codecov/c/${vcs.host}/${vcs.owner}/${vcs.name}.svg${
+            img: `https://img.shields.io/codecov/c/${vcs.host}/${vcs.owner}/${vcs.name}?logo=codecov${
               apiAccessToken
-                ? `?token=${(await fetchRepositoryDetails({vcs, apiAccessToken})).image_token}`
+                ? `&token=${(await fetchRepositoryDetails({vcs, apiAccessToken})).image_token}`
                 : ''
             }`,
             link: `https://codecov.io/${vcs.host}/${vcs.owner}/${vcs.name}`,
