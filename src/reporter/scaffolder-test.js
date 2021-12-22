@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {scaffold} from './reporter';
+import {scaffold} from './scaffolder';
 
 suite('reporter', () => {
   test('that reporter details are scaffolded', () => {

@@ -2,7 +2,7 @@ import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
 import * as predicates from './predicates';
-import * as reporter from './reporter';
+import * as reporter from './reporter/scaffolder';
 import * as badge from './badge/scaffolder';
 import {scaffold} from './scaffolder';
 
