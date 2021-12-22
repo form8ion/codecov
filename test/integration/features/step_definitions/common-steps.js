@@ -39,8 +39,11 @@ When('the project is lifted', async function () {
   const {lift} = require('@form8ion/codecov');
 
   stubbedFs({
-    node_modules: stubbedNodeModules
+    node_modules: stubbedNodeModules,
+    'package.json': JSON.stringify({
+      scripts: {...this.legacyReporting && {'coverage:report': any.string()}}
+    })
   });
 
-  await lift({});
+  await lift({projectRoot: process.cwd()});
 });

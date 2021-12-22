@@ -1,5 +1,11 @@
-import {Then} from '@cucumber/cucumber';
+import {promises as fs} from 'fs';
+
+import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
+
+Given('the legacy node reporter is configured', async function () {
+  this.legacyReporting = true;
+});
 
 Then('the reporting steps are defined', async function () {
   const {devDependencies, scripts} = this.scaffoldResult;
@@ -13,4 +19,10 @@ Then('the reporting steps are not defined', async function () {
 
   assert.isUndefined(devDependencies);
   assert.isUndefined(scripts);
+});
+
+Then('the legacy node reporter is removed', async function () {
+  const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
+
+  assert.isUndefined(scripts['coverage:report']);
 });
