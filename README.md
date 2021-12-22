@@ -110,6 +110,17 @@ Since the [Codecov API](https://docs.codecov.com/reference) appears to only
 support GitHub at the time of this implementation, GitHub is the only VCS host
 supported by this scaffolder at this time.
 
+#### lift
+
+Migrates [Codecov](https://codecov.io/) details from legacy conventions to
+modern conventions.
+
+Takes a single options object as an argument, containing:
+
+##### `projectRoot` __string__ (_required_)
+
+path to the root of the project
+
 ## Contributing
 
 <!--contribution-badges start -->
