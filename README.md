@@ -11,21 +11,39 @@ code coverage service plugin for form8ion
 
 ## Table of Contents
 
+* [Features](#features)
+  * [Scaffold](#scaffold)
+  * [Lift](#lift)
 * [Usage](#usage)
   * [Installation](#installation)
   * [Example](#example)
     * [Import](#import)
     * [Execute](#execute)
   * [API](#api)
-    * [scaffold](#scaffold)
+    * [scaffold](#scaffold-1)
       * [`vcs` __object__ (_required_)](#vcs-object-required)
       * [`visibility` __string__ (_required_)](#visibility-string-required)
       * [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
-    * [lift](#lift)
+    * [lift](#lift-1)
       * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
+
+## Features
+
+### Scaffold
+
+* Define a coverage status badge to communicate current coverage details
+* Link from the status badge to further details on the [Codecov](https://codecov.io/)
+  site
+* Define a coverage status badge for private projects when an [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
+  is provided
+
+### Lift
+
+* Migrate from the [legacy node uploader](https://github.com/codecov/codecov-node)
+  to the [modern uploader](https://docs.codecov.com/docs/codecov-uploader)
 
 ## Usage
 
