@@ -21,6 +21,8 @@ code coverage service plugin for form8ion
       * [`vcs` __object__ (_required_)](#vcs-object-required)
       * [`visibility` __string__ (_required_)](#visibility-string-required)
       * [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
+    * [lift](#lift)
+      * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
