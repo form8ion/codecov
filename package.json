@@ -83,5 +83,8 @@
   },
   "dependencies": {
     "got": "^11.8.2"
+  },
+  "peerDependencies": {
+    "@form8ion/javascript": ">=2.1.0"
   }
 }

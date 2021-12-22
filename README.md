@@ -20,7 +20,8 @@ code coverage service plugin for form8ion
     * [scaffold](#scaffold)
       * [`vcs` __object__ (_required_)](#vcs-object-required)
       * [`visibility` __string__ (_required_)](#visibility-string-required)
-      * [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
+  * [`pathWithinParent` __string__ (_optional_)](#pathwithinparent-string-optional)
+    * * [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -97,6 +98,10 @@ Takes a single options object as an argument, containing:
 Visibility of the project (`Public` or `Private`).
 Unless [`apiAccessToken`](#apiaccesstoken-string-optional) is provided, Codecov
 details will only be scaffolded for public projects.
+
+### `pathWithinParent` __string__ (_optional_)
+
+path within a parent project when working on a sub-project
 
 ##### `apiAccessToken` __string__ (_optional_)
 
