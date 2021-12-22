@@ -26,3 +26,16 @@ Then('the legacy node reporter is removed', async function () {
 
   assert.isUndefined(scripts['coverage:report']);
 });
+
+Then('a next-step is returned for configuring CI reporting', async function () {
+  const {nextSteps} = this.liftResults;
+
+  assert.includeDeepMembers(
+    nextSteps,
+    [{
+      summary: 'Configure modern reporting to Codecov on your CI service',
+      description: 'Configure the [Codecov Uploader](https://docs.codecov.com/docs/codecov-uploader) appropriately'
+        + ' for your CI Provider. If available for your provider, prefer one of the dedicated wrappers.'
+    }]
+  );
+});

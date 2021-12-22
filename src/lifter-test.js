@@ -18,9 +18,9 @@ suite('lifter', () => {
 
   test('that reporting is lifted', async () => {
     const projectRoot = any.string();
+    const reportingResults = any.simpleObject();
+    reportingLifter.default.withArgs({projectRoot}).resolves(reportingResults);
 
-    await lift({projectRoot});
-
-    assert.calledWith(reportingLifter.default, {projectRoot});
+    assert.equal(await lift({projectRoot}), reportingResults);
   });
 });

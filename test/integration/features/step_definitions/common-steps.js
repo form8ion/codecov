@@ -45,5 +45,5 @@ When('the project is lifted', async function () {
     })
   });
 
-  await lift({projectRoot: process.cwd()});
+  this.liftResults = await lift({projectRoot: process.cwd()});
 });

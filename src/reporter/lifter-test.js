@@ -29,7 +29,16 @@ suite('reporting lifter', () => {
     };
     fs.readFile.withArgs(pathToPackageJson, 'utf-8').resolves(JSON.stringify(existingPackageContents));
 
-    await liftReporting({projectRoot});
+    const {nextSteps} = await liftReporting({projectRoot});
+
+    assert.deepEqual(
+      nextSteps,
+      [{
+        summary: 'Configure modern reporting to Codecov on your CI service',
+        description: 'Configure the [Codecov Uploader](https://docs.codecov.com/docs/codecov-uploader) appropriately'
+          + ' for your CI Provider. If available for your provider, prefer one of the dedicated wrappers.'
+      }]
+    );
 
     assert.calledWith(
       fs.writeFile,
@@ -42,7 +51,7 @@ suite('reporting lifter', () => {
     const existingPackageContents = {...any.simpleObject(), scripts: any.simpleObject()};
     fs.readFile.withArgs(pathToPackageJson, 'utf-8').resolves(JSON.stringify(existingPackageContents));
 
-    await liftReporting({projectRoot});
+    assert.deepEqual(await liftReporting({projectRoot}), {});
 
     assert.neverCalledWith(fs.writeFile, pathToPackageJson);
   });

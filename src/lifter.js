@@ -1,5 +1,5 @@
 import {lift as liftReporting} from './reporter';
 
-export async function lift({projectRoot}) {
-  await liftReporting({projectRoot});
+export function lift({projectRoot}) {
+  return liftReporting({projectRoot});
 }

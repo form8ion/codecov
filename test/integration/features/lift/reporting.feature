@@ -4,3 +4,4 @@ Feature: Lift Reporting
     Given the legacy node reporter is configured
     When the project is lifted
     Then the legacy node reporter is removed
+    And a next-step is returned for configuring CI reporting
