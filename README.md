@@ -46,7 +46,7 @@ $ npm install @form8ion/codecov --save
 #### Import
 
 ```javascript
-import {scaffold} from './lib/index.cjs';
+import {scaffold, lift} from '@form8ion/codecov';
 ```
 
 #### Execute
@@ -71,6 +71,8 @@ import {scaffold} from './lib/index.cjs';
     },
     apiAccessToken: 'XXXXXX'
   });
+
+  await lift({projectRoot: process.cwd()});
 })();
 ```
 
