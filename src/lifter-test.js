@@ -18,9 +18,10 @@ suite('lifter', () => {
 
   test('that reporting is lifted', async () => {
     const projectRoot = any.string();
+    const packageManager = any.word();
     const reportingResults = any.simpleObject();
-    reportingLifter.default.withArgs({projectRoot}).resolves(reportingResults);
+    reportingLifter.default.withArgs({projectRoot, packageManager}).resolves(reportingResults);
 
-    assert.equal(await lift({projectRoot}), reportingResults);
+    assert.equal(await lift({projectRoot, packageManager}), reportingResults);
   });
 });

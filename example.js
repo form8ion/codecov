@@ -3,6 +3,7 @@
 import stubbedFs from 'mock-fs';
 import nock from 'nock';
 import {StatusCodes} from 'http-status-codes';
+import {packageManagers} from '@form8ion/javascript-core';
 import {scaffold, lift} from './lib/index.cjs';
 
 // remark-usage-ignore-next 5
@@ -34,5 +35,5 @@ nock('https://codecov.io/')
     apiAccessToken: 'XXXXXX'
   });
 
-  await lift({projectRoot: process.cwd()});
+  await lift({projectRoot: process.cwd(), packageManager: packageManagers.NPM});
 })();

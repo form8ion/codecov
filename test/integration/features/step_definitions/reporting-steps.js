@@ -3,6 +3,8 @@ import {promises as fs} from 'fs';
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 
+import {assertDependenciesWereRemoved} from './common-steps';
+
 Given('the legacy node reporter is configured', async function () {
   this.legacyReporting = true;
 });
@@ -25,6 +27,7 @@ Then('the legacy node reporter is removed', async function () {
   const {scripts} = JSON.parse(await fs.readFile(`${process.cwd()}/package.json`, 'utf-8'));
 
   assert.isUndefined(scripts['coverage:report']);
+  assertDependenciesWereRemoved(this.execa, this.packageManager, ['codecov']);
 });
 
 Then('a next-step is returned for configuring CI reporting', async function () {

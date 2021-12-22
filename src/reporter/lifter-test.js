@@ -4,11 +4,13 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
+import * as execa from '../../thirdparty-wrappers/execa';
 import liftReporting from './lifter';
 
 suite('reporting lifter', () => {
   let sandbox;
   const projectRoot = any.string();
+  const packageManager = any.word();
   const pathToPackageJson = `${projectRoot}/package.json`;
 
   setup(() => {
@@ -16,6 +18,7 @@ suite('reporting lifter', () => {
 
     sandbox.stub(fs, 'readFile');
     sandbox.stub(fs, 'writeFile');
+    sandbox.stub(execa, 'default');
   });
 
   teardown(() => sandbox.restore());
@@ -29,7 +32,7 @@ suite('reporting lifter', () => {
     };
     fs.readFile.withArgs(pathToPackageJson, 'utf-8').resolves(JSON.stringify(existingPackageContents));
 
-    const {nextSteps} = await liftReporting({projectRoot});
+    const {nextSteps} = await liftReporting({projectRoot, packageManager});
 
     assert.deepEqual(
       nextSteps,
@@ -40,6 +43,7 @@ suite('reporting lifter', () => {
       }]
     );
 
+    assert.calledWith(execa.default, packageManager, ['remove', 'codecov']);
     assert.calledWith(
       fs.writeFile,
       pathToPackageJson,

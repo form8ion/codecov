@@ -1,6 +1,8 @@
 import {promises as fs} from 'fs';
 
-export default async function ({projectRoot}) {
+import execa from '../../thirdparty-wrappers/execa';
+
+export default async function ({projectRoot, packageManager}) {
   const pathToPackageJson = `${projectRoot}/package.json`;
 
   const existingPackageContents = await fs.readFile(pathToPackageJson, 'utf-8');
@@ -9,6 +11,8 @@ export default async function ({projectRoot}) {
 
   if (scripts['coverage:report']) {
     await fs.writeFile(pathToPackageJson, JSON.stringify({...otherTopLevelProperties, scripts: otherScripts}));
+
+    await execa(packageManager, ['remove', 'codecov']);
 
     return {
       nextSteps: [{

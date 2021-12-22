@@ -3,12 +3,19 @@ import {After, Before, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import any from '@travi/any';
 import nock from 'nock';
+import td from 'testdouble';
 
 const stubbedNodeModules = stubbedFs.load(resolve(__dirname, '..', '..', '..', '..', 'node_modules'));
+
+export function assertDependenciesWereRemoved(execa, packageManager, dependencyNames) {
+  td.verify(execa(packageManager, ['remove', ...dependencyNames]));
+}
 
 Before(function () {
   this.vcsName = any.word();
   this.vcsOwner = any.word();
+
+  this.execa = td.replace('execa');
 
   nock.disableNetConnect();
 });

@@ -26,6 +26,7 @@ code coverage service plugin for form8ion
       * [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
     * [lift](#lift-1)
       * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
+      * [`packageManager` __string__ (_required_)](#packagemanager-string-required)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
@@ -66,6 +67,7 @@ $ npm install @form8ion/codecov --save
 #### Import
 
 ```javascript
+import {packageManagers} from '@form8ion/javascript-core';
 import {scaffold, lift} from '@form8ion/codecov';
 ```
 
@@ -92,7 +94,7 @@ import {scaffold, lift} from '@form8ion/codecov';
     apiAccessToken: 'XXXXXX'
   });
 
-  await lift({projectRoot: process.cwd()});
+  await lift({projectRoot: process.cwd(), packageManager: packageManagers.NPM});
 })();
 ```
 
@@ -140,6 +142,11 @@ Takes a single options object as an argument, containing:
 ##### `projectRoot` __string__ (_required_)
 
 path to the root of the project
+
+##### `packageManager` __string__ (_required_)
+
+chosen [package manager](https://github.com/form8ion/javascript-core#packagemanagers)
+to be used for the project
 
 ## Contributing
 
