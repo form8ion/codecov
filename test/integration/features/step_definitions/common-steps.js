@@ -33,3 +33,14 @@ When('the project is scaffolded', async function () {
     apiAccessToken: this.apiToken
   });
 });
+
+When('the project is lifted', async function () {
+  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
+  const {lift} = require('@form8ion/codecov');
+
+  stubbedFs({
+    node_modules: stubbedNodeModules
+  });
+
+  await lift({});
+});
