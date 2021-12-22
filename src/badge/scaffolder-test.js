@@ -2,7 +2,7 @@ import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
 import * as repositoryDetailsFetcher from './repository-details-fetcher';
-import {scaffold} from './badge';
+import {scaffold} from './scaffolder';
 
 suite('badge', () => {
   let sandbox;

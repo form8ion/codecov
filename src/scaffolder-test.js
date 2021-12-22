@@ -3,7 +3,7 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 import * as predicates from './predicates';
 import * as reporter from './reporter';
-import * as badge from './badge';
+import * as badge from './badge/scaffolder';
 import {scaffold} from './scaffolder';
 
 suite('codecov', () => {

@@ -1,4 +1,4 @@
-import got from '../thirdparty-wrappers/got';
+import got from '../../thirdparty-wrappers/got';
 
 export default async function ({vcs, apiAccessToken}) {
   const {body: {repo}} = await got(

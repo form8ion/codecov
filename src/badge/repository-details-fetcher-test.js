@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as got from '../thirdparty-wrappers/got';
+import * as got from '../../thirdparty-wrappers/got';
 import fetchRepositoryDetails from './repository-details-fetcher';
 
 suite('repository details fetcher', () => {
