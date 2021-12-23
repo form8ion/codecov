@@ -2,7 +2,6 @@ import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
 import * as predicates from './predicates';
-import * as reporter from './reporter/scaffolder';
 import * as badge from './badge/scaffolder';
 import {scaffold} from './scaffolder';
 
@@ -19,13 +18,11 @@ suite('codecov', () => {
   };
   const visibility = any.word();
   const apiAccessToken = any.word();
-  const reporterResults = any.simpleObject();
   const badgeResults = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(reporter, 'scaffold');
     sandbox.stub(badge, 'scaffold');
     sandbox.stub(predicates, 'coverageShouldBeReportedToCodecov');
 
@@ -35,12 +32,11 @@ suite('codecov', () => {
   teardown(() => sandbox.restore());
 
   test('that codecov details are scaffolded', async () => {
-    reporter.scaffold.returns(reporterResults);
     badge.scaffold.withArgs({vcs, apiAccessToken}).returns(badgeResults);
 
     const results = await scaffold({vcs, visibility, apiAccessToken});
 
-    assert.deepEqual(results, {...reporterResults, ...badgeResults});
+    assert.deepEqual(results, badgeResults);
   });
 
   test('that details are not defined if coverage should not be reported', async () => {

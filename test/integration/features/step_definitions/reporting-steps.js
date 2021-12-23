@@ -9,13 +9,6 @@ Given('the legacy node reporter is configured', async function () {
   this.legacyReporting = true;
 });
 
-Then('the reporting steps are defined', async function () {
-  const {devDependencies, scripts} = this.scaffoldResult;
-
-  assert.deepEqual(devDependencies, ['codecov']);
-  assert.deepEqual(scripts, {'coverage:report': 'c8 report --reporter=text-lcov > coverage.lcov && codecov'});
-});
-
 Then('the reporting steps are not defined', async function () {
   const {devDependencies, scripts} = this.scaffoldResult;
 

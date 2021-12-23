@@ -13,7 +13,6 @@ Feature: Private Project
     And an API access token is provided
     When the project is scaffolded
     Then the coverage badge will be defined
-    And the reporting steps are defined
 
   Scenario: Scaffold a private project on GitLab with an API access token
     Given the source code is hosted on "gitlab"
