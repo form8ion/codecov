@@ -18,7 +18,7 @@ Feature: Lift Reporting
     When the project is lifted
     Then the workflow is configured to report using the GitHub Action
     And the step to call the legacy uploader script is removed from the workflow
-#    And no next-step is returned for configuring CI reporting
+    And no next-step is returned for configuring CI reporting
 
   Scenario: GitHub Workflow as CI with Action configured
     Given CI is a GitHub workflow

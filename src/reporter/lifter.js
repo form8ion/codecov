@@ -1,16 +1,19 @@
 import {promises as fs} from 'fs';
 
 import execa from '../../thirdparty-wrappers/execa';
-import {lift as liftGithubWorkflow} from './ci-providers/github-workflows';
+import {lift as liftCiProvider, test as ciProviderIsLiftable} from './ci-providers';
 
 export default async function ({projectRoot, packageManager}) {
   const pathToPackageJson = `${projectRoot}/package.json`;
 
-  const existingPackageContents = await fs.readFile(pathToPackageJson, 'utf-8');
+  const [ciProviderCanBeLifted, existingPackageContents] = await Promise.all([
+    ciProviderIsLiftable({projectRoot}),
+    fs.readFile(pathToPackageJson, 'utf-8')
+  ]);
   const {scripts, ...otherTopLevelProperties} = JSON.parse(existingPackageContents);
   const {'coverage:report': reportCoverageScript, ...otherScripts} = scripts;
 
-  await liftGithubWorkflow({projectRoot});
+  if (ciProviderCanBeLifted) await liftCiProvider({projectRoot});
 
   if (scripts['coverage:report']) {
     await fs.writeFile(pathToPackageJson, JSON.stringify({...otherTopLevelProperties, scripts: otherScripts}));
@@ -18,11 +21,13 @@ export default async function ({projectRoot, packageManager}) {
     await execa(packageManager, ['remove', 'codecov']);
 
     return {
-      nextSteps: [{
-        summary: 'Configure modern reporting to Codecov on your CI service',
-        description: 'Configure the [Codecov Uploader](https://docs.codecov.com/docs/codecov-uploader) appropriately'
-          + ' for your CI Provider. If available for your provider, prefer one of the dedicated wrappers.'
-      }]
+      ...!ciProviderCanBeLifted && {
+        nextSteps: [{
+          summary: 'Configure modern reporting to Codecov on your CI service',
+          description: 'Configure the [Codecov Uploader](https://docs.codecov.com/docs/codecov-uploader) appropriately'
+            + ' for your CI Provider. If available for your provider, prefer one of the dedicated wrappers.'
+        }]
+      }
     };
   }
 

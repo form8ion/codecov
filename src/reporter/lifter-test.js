@@ -21,6 +21,7 @@ suite('reporting lifter', () => {
     sandbox.stub(fs, 'writeFile');
     sandbox.stub(execa, 'default');
     sandbox.stub(githubWorkflow, 'lift');
+    sandbox.stub(githubWorkflow, 'test');
   });
 
   teardown(() => sandbox.restore());
@@ -33,6 +34,7 @@ suite('reporting lifter', () => {
       scripts: {...otherScripts, 'coverage:report': any.string()}
     };
     fs.readFile.withArgs(pathToPackageJson, 'utf-8').resolves(JSON.stringify(existingPackageContents));
+    githubWorkflow.test.resolves(false);
 
     const {nextSteps} = await liftReporting({projectRoot, packageManager});
 
@@ -51,7 +53,23 @@ suite('reporting lifter', () => {
       pathToPackageJson,
       JSON.stringify({...otherTopLevelProperties, scripts: otherScripts})
     );
+    assert.notCalled(githubWorkflow.lift);
+  });
+
+  test('that the CI provider is lifted when supported', async () => {
+    fs.readFile
+      .withArgs(pathToPackageJson, 'utf-8')
+      .resolves(JSON.stringify({
+        ...any.simpleObject(),
+        scripts: {...any.simpleObject(), 'coverage:report': any.string()}
+      }));
+    githubWorkflow.test.withArgs({projectRoot}).resolves(true);
+
+    const {nextSteps} = await liftReporting({projectRoot, packageManager});
+
+    assert.calledOnce(githubWorkflow.test);
     assert.calledWith(githubWorkflow.lift, {projectRoot});
+    assert.isUndefined(nextSteps);
   });
 
   test('that the `package.json` is not updated if it did not contain a `coverage:report` script', async () => {

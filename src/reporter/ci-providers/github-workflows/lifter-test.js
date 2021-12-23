@@ -6,7 +6,7 @@ import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
 
-import {lift as configureGithubWorkflow} from './lifter';
+import {lift as configureGithubWorkflow, test as projectIsVerifiedWithAGithubWorkflow} from './lifter';
 
 suite('github workflow lifter', () => {
   let sandbox;
@@ -18,10 +18,27 @@ suite('github workflow lifter', () => {
 
     sandbox.stub(fs, 'readFile');
     sandbox.stub(fs, 'writeFile');
-    sandbox.stub(core, 'fileExists');
   });
 
   teardown(() => sandbox.restore());
+
+  suite('github workflow predicate', () => {
+    setup(() => {
+      sandbox.stub(core, 'fileExists');
+    });
+
+    test('that `true` is returned if the workflow file exists', async () => {
+      core.fileExists.withArgs(pathToWorkflowFile).resolves(true);
+
+      assert.isTrue(await projectIsVerifiedWithAGithubWorkflow({projectRoot}));
+    });
+
+    test('that `false` is returned if the workflow file exists', async () => {
+      core.fileExists.withArgs(pathToWorkflowFile).resolves(false);
+
+      assert.isFalse(await projectIsVerifiedWithAGithubWorkflow({projectRoot}));
+    });
+  });
 
   test('that the codecov action is added to the verify job', async () => {
     const otherTopLevelProperties = any.simpleObject();
@@ -33,7 +50,6 @@ suite('github workflow lifter', () => {
       jobs: {...otherJobs, verify: {...otherVerifyProperties, steps: existingVerifySteps}}
     };
     fs.readFile.withArgs(pathToWorkflowFile, 'utf-8').resolves(dump(existingWorkflowContents));
-    core.fileExists.withArgs(pathToWorkflowFile).resolves(true);
 
     await configureGithubWorkflow({projectRoot});
 
@@ -61,19 +77,9 @@ suite('github workflow lifter', () => {
         }
       }
     }));
-    core.fileExists.withArgs(pathToWorkflowFile).resolves(true);
 
     await configureGithubWorkflow({projectRoot});
 
-    assert.neverCalledWith(fs.writeFile, pathToWorkflowFile);
-  });
-
-  test('that the workflow is not processed if not defined', async () => {
-    core.fileExists.withArgs(pathToWorkflowFile).resolves(false);
-
-    await configureGithubWorkflow({projectRoot});
-
-    assert.neverCalledWith(fs.readFile, pathToWorkflowFile);
     assert.neverCalledWith(fs.writeFile, pathToWorkflowFile);
   });
 
@@ -90,7 +96,6 @@ suite('github workflow lifter', () => {
       }
     };
     fs.readFile.withArgs(pathToWorkflowFile, 'utf-8').resolves(dump(existingWorkflowContents));
-    core.fileExists.withArgs(pathToWorkflowFile).resolves(true);
 
     await configureGithubWorkflow({projectRoot});
 

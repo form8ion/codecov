@@ -1,1 +1,1 @@
-export {lift} from './lifter';
+export {lift, test} from './lifter';

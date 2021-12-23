@@ -2,10 +2,16 @@ import {promises as fs} from 'fs';
 import {dump, load} from 'js-yaml';
 import {fileExists} from '@form8ion/core';
 
-export async function lift({projectRoot}) {
-  const pathToWorkflowFile = `${projectRoot}/.github/workflows/node-ci.yml`;
+function getPathToWorkflowFile(projectRoot) {
+  return `${projectRoot}/.github/workflows/node-ci.yml`;
+}
 
-  if (!await fileExists(pathToWorkflowFile)) return;
+export function test({projectRoot}) {
+  return fileExists(getPathToWorkflowFile(projectRoot));
+}
+
+export async function lift({projectRoot}) {
+  const pathToWorkflowFile = getPathToWorkflowFile(projectRoot);
 
   const workflowDetails = load(await fs.readFile(pathToWorkflowFile, 'utf-8'));
   const {jobs: {verify: {steps}}} = workflowDetails;

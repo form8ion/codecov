@@ -45,6 +45,8 @@ code coverage service plugin for form8ion
 
 * Migrate from the [legacy node uploader](https://github.com/codecov/codecov-node)
   to the [modern uploader](https://docs.codecov.com/docs/codecov-uploader)
+  * Currently supports the following CI Providers:
+    * [GitHub Action](https://github.com/marketplace/actions/codecov)
 
 ## Usage
 
