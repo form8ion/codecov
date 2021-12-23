@@ -42,3 +42,9 @@ Then('a next-step is returned for configuring CI reporting', async function () {
     }]
   );
 });
+
+Then('no next-step is returned for configuring CI reporting', async function () {
+  const {nextSteps} = this.liftResults;
+
+  assert.isUndefined(nextSteps);
+});

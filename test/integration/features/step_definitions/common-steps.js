@@ -1,4 +1,5 @@
 import {resolve} from 'path';
+import {dump} from 'js-yaml';
 import {After, Before, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import any from '@travi/any';
@@ -46,6 +47,23 @@ When('the project is lifted', async function () {
   const {lift} = require('@form8ion/codecov');
 
   stubbedFs({
+    ...this.githubWorkflow && {
+      '.github': {
+        workflows: {
+          'node-ci.yml': dump({
+            jobs: {
+              verify: {
+                steps: [
+                  ...any.listOf(any.simpleObject),
+                  ...this.legacyReporting ? [{run: 'npm run coverage:report'}] : [],
+                  ...this.githubAction ? [{uses: `codecov/codecov-action@v${any.integer()}`}] : []
+                ]
+              }
+            }
+          })
+        }
+      }
+    },
     node_modules: stubbedNodeModules,
     'package.json': JSON.stringify({
       scripts: {...this.legacyReporting && {'coverage:report': any.string()}}

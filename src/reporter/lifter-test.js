@@ -5,6 +5,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 
 import * as execa from '../../thirdparty-wrappers/execa';
+import * as githubWorkflow from './github-workflow';
 import liftReporting from './lifter';
 
 suite('reporting lifter', () => {
@@ -19,6 +20,7 @@ suite('reporting lifter', () => {
     sandbox.stub(fs, 'readFile');
     sandbox.stub(fs, 'writeFile');
     sandbox.stub(execa, 'default');
+    sandbox.stub(githubWorkflow, 'lift');
   });
 
   teardown(() => sandbox.restore());
@@ -49,6 +51,7 @@ suite('reporting lifter', () => {
       pathToPackageJson,
       JSON.stringify({...otherTopLevelProperties, scripts: otherScripts})
     );
+    assert.calledWith(githubWorkflow.lift, {projectRoot});
   });
 
   test('that the `package.json` is not updated if it did not contain a `coverage:report` script', async () => {

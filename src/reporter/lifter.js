@@ -1,6 +1,7 @@
 import {promises as fs} from 'fs';
 
 import execa from '../../thirdparty-wrappers/execa';
+import {lift as liftGithubWorkflow} from './github-workflow';
 
 export default async function ({projectRoot, packageManager}) {
   const pathToPackageJson = `${projectRoot}/package.json`;
@@ -8,6 +9,8 @@ export default async function ({projectRoot, packageManager}) {
   const existingPackageContents = await fs.readFile(pathToPackageJson, 'utf-8');
   const {scripts, ...otherTopLevelProperties} = JSON.parse(existingPackageContents);
   const {'coverage:report': reportCoverageScript, ...otherScripts} = scripts;
+
+  await liftGithubWorkflow({projectRoot});
 
   if (scripts['coverage:report']) {
     await fs.writeFile(pathToPackageJson, JSON.stringify({...otherTopLevelProperties, scripts: otherScripts}));
