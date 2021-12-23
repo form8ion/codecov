@@ -5,7 +5,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 
 import * as execa from '../../thirdparty-wrappers/execa';
-import * as githubWorkflow from './github-workflow';
+import * as githubWorkflow from './ci-providers/github-workflows/lifter';
 import liftReporting from './lifter';
 
 suite('reporting lifter', () => {

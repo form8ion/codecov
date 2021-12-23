@@ -6,9 +6,9 @@ import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
 
-import {lift as configureGithubWorkflow} from './github-workflow';
+import {lift as configureGithubWorkflow} from './lifter';
 
-suite('github workflow', () => {
+suite('github workflow lifter', () => {
   let sandbox;
   const projectRoot = any.string();
   const pathToWorkflowFile = `${projectRoot}/.github/workflows/node-ci.yml`;

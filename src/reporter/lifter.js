@@ -1,7 +1,7 @@
 import {promises as fs} from 'fs';
 
 import execa from '../../thirdparty-wrappers/execa';
-import {lift as liftGithubWorkflow} from './github-workflow';
+import {lift as liftGithubWorkflow} from './ci-providers/github-workflows';
 
 export default async function ({projectRoot, packageManager}) {
   const pathToPackageJson = `${projectRoot}/package.json`;
