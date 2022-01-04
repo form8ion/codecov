@@ -10,13 +10,15 @@ export default async function ({projectRoot, packageManager}) {
     ciProviderIsLiftable({projectRoot}),
     fs.readFile(pathToPackageJson, 'utf-8')
   ]);
-  const {scripts, ...otherTopLevelProperties} = JSON.parse(existingPackageContents);
+  const parsedPackageContents = JSON.parse(existingPackageContents);
+  const {scripts} = parsedPackageContents;
   const {'coverage:report': reportCoverageScript, ...otherScripts} = scripts;
 
   if (ciProviderCanBeLifted) await liftCiProvider({projectRoot});
 
   if (scripts['coverage:report']) {
-    await fs.writeFile(pathToPackageJson, JSON.stringify({...otherTopLevelProperties, scripts: otherScripts}));
+    parsedPackageContents.scripts = otherScripts;
+    await fs.writeFile(pathToPackageJson, JSON.stringify(parsedPackageContents));
 
     await execa(packageManager, ['remove', 'codecov']);
 
