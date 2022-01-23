@@ -3,7 +3,6 @@ name: Node.js CI
   push:
     branches:
       - master
-      - alpha
       - beta
       - renovate/**
   pull_request:
@@ -44,21 +43,21 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: npm clean-install
       - run: npm test
-  release:
+  trigger-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     needs:
       - verify
       - verify-matrix
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - uses: octokit/request-action@v2.x
         with:
-          cache: npm
-          node-version-file: '.nvmrc'
-      - run: npm clean-install
-      - name: semantic-release
-        run: npx semantic-release
+          route: >-
+            POST
+            /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches
+          owner: form8ion
+          repo: codecov
+          ref: ${{ github.ref }}
+          workflow_id: release.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
