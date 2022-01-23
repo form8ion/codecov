@@ -22,11 +22,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           cache: npm
-          node-version-file: '.nvmrc'
+          node-version-file: .nvmrc
       - run: npm clean-install
       - run: npm test
-      - name: Upload coverage data to Codecov
-        run: npm run coverage:report
+      - uses: codecov/codecov-action@v2
   verify-matrix:
     runs-on: ubuntu-latest
     strategy:
