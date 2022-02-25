@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           cache: npm
           node-version-file: .nvmrc
@@ -37,7 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           cache: npm
           node-version: ${{ matrix.node }}
