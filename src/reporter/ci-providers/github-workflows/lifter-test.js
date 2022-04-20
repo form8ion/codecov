@@ -60,7 +60,7 @@ suite('github workflow lifter', () => {
         ...otherTopLevelProperties,
         jobs: {
           ...otherJobs,
-          verify: {...otherVerifyProperties, steps: [...existingVerifySteps, {uses: 'codecov/codecov-action@v2'}]}
+          verify: {...otherVerifyProperties, steps: [...existingVerifySteps, {uses: 'codecov/codecov-action@v3'}]}
         }
       })
     );
@@ -73,7 +73,7 @@ suite('github workflow lifter', () => {
         ...(any.simpleObject()),
         verify: {
           ...(any.simpleObject()),
-          steps: [...any.listOf(any.simpleObject), {uses: 'codecov/codecov-action@v2'}]
+          steps: [...any.listOf(any.simpleObject), {uses: 'codecov/codecov-action@v3'}]
         }
       }
     }));
@@ -106,7 +106,7 @@ suite('github workflow lifter', () => {
         ...otherTopLevelProperties,
         jobs: {
           ...otherJobs,
-          verify: {...otherVerifyProperties, steps: [...otherVerifySteps, {uses: 'codecov/codecov-action@v2'}]}
+          verify: {...otherVerifyProperties, steps: [...otherVerifySteps, {uses: 'codecov/codecov-action@v3'}]}
         }
       })
     );

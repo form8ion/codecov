@@ -27,7 +27,7 @@ export async function lift({projectRoot}) {
           ...workflowDetails.jobs,
           verify: {
             ...workflowDetails.jobs.verify,
-            steps: [...stepsWithLegacyReportingRemoved, {uses: 'codecov/codecov-action@v2'}]
+            steps: [...stepsWithLegacyReportingRemoved, {uses: 'codecov/codecov-action@v3'}]
           }
         }
       })
