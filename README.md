@@ -55,6 +55,7 @@ code coverage service plugin for form8ion
 [![MIT license][license-badge]][license-link]
 [![npm][npm-badge]][npm-link]
 [![Try @form8ion/codecov on RunKit][runkit-badge]][runkit-link]
+![node][node-badge]
 
 <!--consumer-badges end -->
 
@@ -214,3 +215,5 @@ $ npm test
 [runkit-link]: https://npm.runkit.com/@form8ion/codecov
 
 [runkit-badge]: https://badge.runkitcdn.com/@form8ion/codecov.svg
+
+[node-badge]: https://img.shields.io/node/v/@form8ion/codecov?logo=node.js
