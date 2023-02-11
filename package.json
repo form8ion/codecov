@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "@form8ion/core": "^2.0.0",
-    "execa": "^5.1.1",
+    "execa": "^6.0.0",
     "got": "^11.8.5",
     "js-yaml": "^4.1.0"
   },
