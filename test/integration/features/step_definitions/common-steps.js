@@ -1,5 +1,7 @@
-import {resolve} from 'path';
+import {resolve} from 'node:path';
 import {dump} from 'js-yaml';
+import {packageManagers} from '@form8ion/javascript-core';
+
 import {After, Before, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import any from '@travi/any';
@@ -43,6 +45,8 @@ When('the project is scaffolded', async function () {
 });
 
 When('the project is lifted', async function () {
+  this.packageManager = any.fromList(Object.values(packageManagers));
+
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   const {lift} = require('@form8ion/codecov');
 
@@ -70,5 +74,5 @@ When('the project is lifted', async function () {
     })
   });
 
-  this.liftResults = await lift({projectRoot: process.cwd()});
+  this.liftResults = await lift({projectRoot: process.cwd(), packageManager: this.packageManager});
 });
