@@ -6,6 +6,7 @@ code coverage service plugin for form8ion
 
 [![Node CI Workflow Status][github-actions-ci-badge]][github-actions-ci-link]
 [![Codecov][coverage-badge]][coverage-link]
+![SLSA Level 2][slsa-badge]
 
 <!--status-badges end -->
 
@@ -190,7 +191,7 @@ $ npm test
 
 [semantic-release-link]: https://github.com/semantic-release/semantic-release
 
-[semantic-release-badge]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
+[semantic-release-badge]: https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release
 
 [renovate-link]: https://renovatebot.com
 
@@ -217,3 +218,5 @@ $ npm test
 [runkit-badge]: https://badge.runkitcdn.com/@form8ion/codecov.svg
 
 [node-badge]: https://img.shields.io/node/v/@form8ion/codecov?logo=node.js
+
+[slsa-badge]: https://slsa.dev/images/gh-badge-level2.svg
