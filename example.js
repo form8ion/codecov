@@ -16,24 +16,15 @@ nock('https://codecov.io/')
 // #### Execute
 
 (async () => {
-  await scaffold({
-    visibility: 'Public',
+  await scaffold();
+
+  await lift({
+    projectRoot: process.cwd(),
+    packageManager: packageManagers.NPM,
     vcs: {
       host: 'github',
       owner: 'foo',
       name: 'bar'
     }
   });
-
-  await scaffold({
-    visibility: 'Private',
-    vcs: {
-      host: 'github',
-      owner: 'foo',
-      name: 'bar'
-    },
-    apiAccessToken: 'XXXXXX'
-  });
-
-  await lift({projectRoot: process.cwd(), packageManager: packageManagers.NPM});
 })();

@@ -10,7 +10,7 @@ Given('the legacy node reporter is configured', async function () {
 });
 
 Then('the reporting steps are not defined', async function () {
-  const {devDependencies, scripts} = this.scaffoldResult;
+  const {devDependencies, scripts} = this.result;
 
   assert.isUndefined(devDependencies);
   assert.isUndefined(scripts);
@@ -24,7 +24,7 @@ Then('the legacy node reporter is removed', async function () {
 });
 
 Then('a next-step is returned for configuring CI reporting', async function () {
-  const {nextSteps} = this.liftResults;
+  const {nextSteps} = this.result;
 
   assert.includeDeepMembers(
     nextSteps,
@@ -37,7 +37,7 @@ Then('a next-step is returned for configuring CI reporting', async function () {
 });
 
 Then('no next-step is returned for configuring CI reporting', async function () {
-  const {nextSteps} = this.liftResults;
+  const {nextSteps} = this.result;
 
   assert.isUndefined(nextSteps);
 });

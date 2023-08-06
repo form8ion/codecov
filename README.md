@@ -13,7 +13,6 @@ code coverage service plugin for form8ion
 ## Table of Contents
 
 * [Features](#features)
-  * [Scaffold](#scaffold)
   * [Lift](#lift)
 * [Usage](#usage)
   * [Installation](#installation)
@@ -21,29 +20,22 @@ code coverage service plugin for form8ion
     * [Import](#import)
     * [Execute](#execute)
   * [API](#api)
-    * [scaffold](#scaffold-1)
-      * [`vcs` __object__ (_required_)](#vcs-object-required)
-      * [`visibility` __string__ (_required_)](#visibility-string-required)
-      * [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
+    * [scaffold](#scaffold)
     * [lift](#lift-1)
       * [`projectRoot` __string__ (_required_)](#projectroot-string-required)
       * [`packageManager` __string__ (_required_)](#packagemanager-string-required)
+      * [`vcs` __object__ (_required_)](#vcs-object-required)
 * [Contributing](#contributing)
   * [Dependencies](#dependencies)
   * [Verification](#verification)
 
 ## Features
 
-### Scaffold
+### Lift
 
 * Define a coverage status badge to communicate current coverage details
 * Link from the status badge to further details on the [Codecov](https://codecov.io/)
   site
-* Define a coverage status badge for private projects when an [`apiAccessToken` __string__ (_optional_)](#apiaccesstoken-string-optional)
-  is provided
-
-### Lift
-
 * Migrate from the [legacy node uploader](https://github.com/codecov/codecov-node)
   to the [modern uploader](https://docs.codecov.com/docs/codecov-uploader)
   * Currently supports the following CI Providers:
@@ -79,26 +71,17 @@ import {scaffold, lift} from '@form8ion/codecov';
 
 ```javascript
 (async () => {
-  await scaffold({
-    visibility: 'Public',
+  await scaffold();
+
+  await lift({
+    projectRoot: process.cwd(),
+    packageManager: packageManagers.NPM,
     vcs: {
       host: 'github',
       owner: 'foo',
       name: 'bar'
     }
   });
-
-  await scaffold({
-    visibility: 'Private',
-    vcs: {
-      host: 'github',
-      owner: 'foo',
-      name: 'bar'
-    },
-    apiAccessToken: 'XXXXXX'
-  });
-
-  await lift({projectRoot: process.cwd(), packageManager: packageManagers.NPM});
 })();
 ```
 
@@ -106,35 +89,8 @@ import {scaffold, lift} from '@form8ion/codecov';
 
 #### scaffold
 
-Scaffolder for configuring reporting of coverage data to [Codecov](https://codecov.io/)
-and providing visibility to the current coverage status through a README badge
-
-Takes a single options object as an argument, containing:
-
-##### `vcs` __object__ (_required_)
-
-* `host` __string__ (_required_)
-  VCS hosting service
-* `owner` __string__ (_required_)
-  account name on the host service for the repository
-* `name` __string__ (_required_)
-  repository name
-
-##### `visibility` __string__ (_required_)
-
-Visibility of the project (`Public` or `Private`).
-Unless [`apiAccessToken`](#apiaccesstoken-string-optional) is provided, Codecov
-details will only be scaffolded for public projects.
-
-##### `apiAccessToken` __string__ (_optional_)
-
-Personal Access Token for accessing the [Codecov API](https://docs.codecov.com/reference).
-Providing an access token enables [fetching the `image_token` for the repository](https://docs.codecov.com/reference/repositories#get-a-single-repository)
-so that the coverage badge can display the proper coverage state of the
-project when the project is not public.
-Since the [Codecov API](https://docs.codecov.com/reference) appears to only
-support GitHub at the time of this implementation, GitHub is the only VCS host
-supported by this scaffolder at this time.
+The scaffolder of this plugin is currently a no-op since the work is all done
+as part of the lifting process
 
 #### lift
 
@@ -151,6 +107,15 @@ path to the root of the project
 
 chosen [package manager](https://github.com/form8ion/javascript-core#packagemanagers)
 to be used for the project
+
+##### `vcs` __object__ (_required_)
+
+* `host` __string__ (_required_)
+  VCS hosting service
+* `owner` __string__ (_required_)
+  account name on the host service for the repository
+* `name` __string__ (_required_)
+  repository name
 
 ## Contributing
 
