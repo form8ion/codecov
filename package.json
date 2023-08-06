@@ -4,17 +4,22 @@
   "license": "MIT",
   "version": "0.0.0-semantically-released",
   "engines": {
-    "node": ">=16"
+    "node": "^16.14 || >=18"
   },
   "author": "Matt Travi <npm@travi.org> (https://matt.travi.org)",
   "repository": "form8ion/codecov",
   "bugs": "https://github.com/form8ion/codecov/issues",
   "homepage": "https://npm.im/@form8ion/codecov",
   "runkitExampleFilename": "./example.js",
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.es.js",
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "exports": {
+    "require": "./lib/index.js",
+    "import": "./lib/index.mjs"
+  },
   "sideEffects": false,
   "scripts": {
+    "pretest": "run-s build",
     "test": "npm-run-all --print-label build --parallel lint:* --parallel test:*",
     "lint:lockfile": "lockfile-lint",
     "lint:js": "eslint . --cache",
@@ -34,7 +39,7 @@
     "test:unit:base": "DEBUG=any mocha 'src/**/*-test.js'",
     "lint:peer": "npm ls >/dev/null",
     "lint:gherkin": "gherkin-lint",
-    "pretest:integration": "preview",
+    "pretest:integration": "run-s build",
     "test:integration": "run-s 'test:integration:base -- --profile noWip'",
     "test:integration:base": "NODE_OPTIONS=--enable-source-maps DEBUG=any cucumber-js test/integration --profile base",
     "test:integration:debug": "DEBUG=test run-s test:integration",
@@ -42,7 +47,7 @@
     "test:integration:wip:debug": "DEBUG=test run-s 'test:integration:wip'",
     "test:integration:focus": "run-s 'test:integration:base -- --profile focus'",
     "lint:engines": "ls-engines",
-    "lint:publish": "publint"
+    "lint:publish": "publint --strict"
   },
   "files": [
     "example.js",
@@ -53,7 +58,8 @@
     "provenance": true
   },
   "dependencies": {
-    "@form8ion/core": "^2.0.0",
+    "@form8ion/core": "^3.2.0",
+    "deepmerge": "^4.3.1",
     "execa": "^5.1.1",
     "got": "^11.8.5",
     "js-yaml": "^4.1.0"
@@ -68,7 +74,6 @@
     "@form8ion/eslint-config-mocha": "3.0.0",
     "@form8ion/javascript-core": "10.0.1",
     "@form8ion/remark-lint-preset": "6.0.0",
-    "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-node-resolve": "15.1.0",
     "@travi/any": "2.1.8",
     "ban-sensitive-files": "1.9.19",
@@ -85,7 +90,6 @@
     "mock-fs": "5.2.0",
     "nock": "13.3.2",
     "npm-run-all": "4.1.5",
-    "package-preview": "4.0.0",
     "publint": "0.2.0",
     "remark-cli": "11.0.0",
     "remark-toc": "8.0.1",
@@ -94,6 +98,6 @@
     "rollup": "3.27.2",
     "rollup-plugin-auto-external": "2.0.0",
     "sinon": "15.2.0",
-    "testdouble": "3.16.7"
+    "testdouble": "3.18.0"
   }
 }

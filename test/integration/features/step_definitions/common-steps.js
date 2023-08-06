@@ -2,9 +2,10 @@ import {resolve} from 'node:path';
 import {dump} from 'js-yaml';
 import {packageManagers} from '@form8ion/javascript-core';
 
-import {After, Before, When} from '@cucumber/cucumber';
+import {After, Before, Then, When} from '@cucumber/cucumber';
 import stubbedFs from 'mock-fs';
 import any from '@travi/any';
+import {assert} from 'chai';
 import nock from 'nock';
 import td from 'testdouble';
 
@@ -37,11 +38,7 @@ When('the project is scaffolded', async function () {
     node_modules: stubbedNodeModules
   });
 
-  this.scaffoldResult = await scaffold({
-    vcs: {host: this.vcsHost, owner: this.vcsOwner, name: this.vcsName},
-    visibility: this.visibility,
-    apiAccessToken: this.apiToken
-  });
+  this.result = await scaffold();
 });
 
 When('the project is lifted', async function () {
@@ -74,5 +71,13 @@ When('the project is lifted', async function () {
     })
   });
 
-  this.liftResults = await lift({projectRoot: process.cwd(), packageManager: this.packageManager});
+  this.result = await lift({
+    projectRoot: process.cwd(),
+    packageManager: this.packageManager,
+    vcs: {host: this.vcsHost, owner: this.vcsOwner, name: this.vcsName}
+  });
+});
+
+Then('empty results are returned', async function () {
+  assert.deepEqual(this.result, {});
 });

@@ -2,7 +2,7 @@ import {Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 
 Then('the coverage badge will be defined', async function () {
-  const {badges} = this.scaffoldResult;
+  const {badges} = this.result;
 
   assert.deepEqual(
     badges.status.coverage,
@@ -17,7 +17,7 @@ Then('the coverage badge will be defined', async function () {
 });
 
 Then('the coverage badge will not be defined', async function () {
-  const {badges} = this.scaffoldResult;
+  const {badges} = this.result;
 
   assert.isUndefined(badges);
 });
