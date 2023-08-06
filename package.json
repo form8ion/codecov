@@ -11,10 +11,15 @@
   "bugs": "https://github.com/form8ion/codecov/issues",
   "homepage": "https://npm.im/@form8ion/codecov",
   "runkitExampleFilename": "./example.js",
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.es.js",
+  "main": "./lib/index.js",
+  "module": "./lib/index.mjs",
+  "exports": {
+    "require": "./lib/index.js",
+    "import": "./lib/index.mjs"
+  },
   "sideEffects": false,
   "scripts": {
+    "pretest": "run-s build",
     "test": "npm-run-all --print-label build --parallel lint:* --parallel test:*",
     "lint:lockfile": "lockfile-lint",
     "lint:js": "eslint . --cache",
@@ -42,7 +47,7 @@
     "test:integration:wip:debug": "DEBUG=test run-s 'test:integration:wip'",
     "test:integration:focus": "run-s 'test:integration:base -- --profile focus'",
     "lint:engines": "ls-engines",
-    "lint:publish": "publint"
+    "lint:publish": "publint --strict"
   },
   "files": [
     "example.js",

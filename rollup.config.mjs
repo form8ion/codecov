@@ -8,7 +8,7 @@ export default {
     nodeResolve({mainFields: ['module']})
   ],
   output: [
-    {file: 'lib/index.cjs.js', format: 'cjs', sourcemap: true},
-    {file: 'lib/index.es.js', format: 'es', sourcemap: true}
+    {file: 'lib/index.js', format: 'cjs', sourcemap: true},
+    {file: 'lib/index.mjs', format: 'esm', sourcemap: true}
   ]
 };

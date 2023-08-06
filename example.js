@@ -4,7 +4,7 @@ import stubbedFs from 'mock-fs';
 import nock from 'nock';
 import {StatusCodes} from 'http-status-codes';
 import {packageManagers} from '@form8ion/javascript-core';
-import {scaffold, lift} from './lib/index.cjs';
+import {scaffold, lift} from './lib/index';
 
 // remark-usage-ignore-next 5
 stubbedFs({'package.json': JSON.stringify({scripts: {}})});
