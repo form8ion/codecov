@@ -1,2 +1,2 @@
-export {scaffold} from './scaffolder';
-export {lift} from './lifter';
+export {scaffold} from './scaffolder.js';
+export {lift} from './lifter.js';

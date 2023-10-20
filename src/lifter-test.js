@@ -4,9 +4,9 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import * as reportingLifter from './reporter/lifter';
-import * as badge from './badge/scaffolder';
-import {lift} from './lifter';
+import * as reportingLifter from './reporter/lifter.js';
+import * as badge from './badge/scaffolder.js';
+import {lift} from './lifter.js';
 
 suite('lifter', () => {
   let sandbox;

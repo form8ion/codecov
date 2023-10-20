@@ -4,9 +4,9 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import * as execa from '../../thirdparty-wrappers/execa';
-import * as githubWorkflow from './ci-providers/github-workflows/lifter';
-import liftReporting from './lifter';
+import * as execa from '../../thirdparty-wrappers/execa.js';
+import * as githubWorkflow from './ci-providers/github-workflows/lifter.js';
+import liftReporting from './lifter.js';
 
 suite('reporting lifter', () => {
   let sandbox;

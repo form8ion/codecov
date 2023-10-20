@@ -1,8 +1,9 @@
 import any from '@travi/any';
 import {assert} from 'chai';
 import sinon from 'sinon';
-import * as repositoryDetailsFetcher from './repository-details-fetcher';
-import {scaffold} from './scaffolder';
+
+import * as repositoryDetailsFetcher from './repository-details-fetcher.js';
+import {scaffold} from './scaffolder.js';
 
 suite('badge', () => {
   let sandbox;

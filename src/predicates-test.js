@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import any from '@travi/any';
 
-import {coverageShouldBeReportedToCodecov} from './predicates';
+import {coverageShouldBeReportedToCodecov} from './predicates.js';
 
 suite('predicates', () => {
   test('that coverage should be reported when the project is public', () => {
