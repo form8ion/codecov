@@ -3,7 +3,7 @@ import {promises as fs} from 'fs';
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 
-import {assertDependenciesWereRemoved} from './common-steps';
+import {assertDependenciesWereRemoved} from './common-steps.js';
 
 Given('the legacy node reporter is configured', async function () {
   this.legacyReporting = true;

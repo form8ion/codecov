@@ -1,7 +1,7 @@
 import {promises as fs} from 'fs';
 
-import execa from '../../thirdparty-wrappers/execa';
-import {lift as liftCiProvider, test as ciProviderIsLiftable} from './ci-providers';
+import execa from '../../thirdparty-wrappers/execa.js';
+import {lift as liftCiProvider, test as ciProviderIsLiftable} from './ci-providers/index.js';
 
 export default async function ({projectRoot, packageManager}) {
   const pathToPackageJson = `${projectRoot}/package.json`;

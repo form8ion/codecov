@@ -1,1 +1,1 @@
-export {lift, test} from './github-workflows';
+export {lift, test} from './github-workflows/index.js';

@@ -2,8 +2,8 @@ import sinon from 'sinon';
 import any from '@travi/any';
 import {assert} from 'chai';
 
-import * as got from '../../thirdparty-wrappers/got';
-import fetchRepositoryDetails from './repository-details-fetcher';
+import * as got from '../../thirdparty-wrappers/got.js';
+import fetchRepositoryDetails from './repository-details-fetcher.js';
 
 suite('repository details fetcher', () => {
   let sandbox;

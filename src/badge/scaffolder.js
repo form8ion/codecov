@@ -1,4 +1,4 @@
-import fetchRepositoryDetails from './repository-details-fetcher';
+import fetchRepositoryDetails from './repository-details-fetcher.js';
 
 export async function scaffold({vcs, apiAccessToken}) {
   return {

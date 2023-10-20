@@ -6,7 +6,7 @@ import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
 
-import {lift as configureGithubWorkflow, test as projectIsVerifiedWithAGithubWorkflow} from './lifter';
+import {lift as configureGithubWorkflow, test as projectIsVerifiedWithAGithubWorkflow} from './lifter.js';
 
 suite('github workflow lifter', () => {
   let sandbox;
