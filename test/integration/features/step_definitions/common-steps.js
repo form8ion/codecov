@@ -78,6 +78,11 @@ When('the project is lifted', async function () {
   });
 });
 
+When('Codecov is removed from the project', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
 Then('empty results are returned', async function () {
   assert.deepEqual(this.result, {});
 });

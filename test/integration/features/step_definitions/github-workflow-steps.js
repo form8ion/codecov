@@ -12,6 +12,11 @@ Given('the GitHub Action is configured', async function () {
   this.githubAction = true;
 });
 
+Given('the codecov action is used in the verify workflow', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
 Then('the workflow is configured to report using the GitHub Action', async function () {
   const {jobs: {verify: {steps}}} = load(await fs.readFile(`${process.cwd()}/.github/workflows/node-ci.yml`, 'utf-8'));
 
@@ -32,4 +37,9 @@ Then('the step to call the legacy uploader script is removed from the workflow',
     !!steps.find(({run}) => 'npm run coverage:report' === run),
     'The legacy step for reporting coverage has not been removed from the workflow steps'
   );
+});
+
+Then('the codecov action is not used in the workflow', async function () {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
 });
