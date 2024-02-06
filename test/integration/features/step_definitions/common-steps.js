@@ -15,6 +15,26 @@ export function assertDependenciesWereRemoved(execa, packageManager, dependencyN
   td.verify(execa(packageManager, ['remove', ...dependencyNames]));
 }
 
+function stubGithubWorkflow(githubWorkflow, legacyReporting, githubAction) {
+  return githubWorkflow && {
+    '.github': {
+      workflows: {
+        'node-ci.yml': dump({
+          jobs: {
+            verify: {
+              steps: [
+                ...any.listOf(any.simpleObject),
+                ...legacyReporting ? [{run: 'npm run coverage:report'}] : [],
+                ...githubAction ? [{uses: `codecov/codecov-action@v${any.integer()}`}] : []
+              ]
+            }
+          }
+        })
+      }
+    }
+  };
+}
+
 Before(function () {
   this.vcsName = any.word();
   this.vcsOwner = any.word();
@@ -48,23 +68,7 @@ When('the project is lifted', async function () {
   const {lift} = require('@form8ion/codecov');
 
   stubbedFs({
-    ...this.githubWorkflow && {
-      '.github': {
-        workflows: {
-          'node-ci.yml': dump({
-            jobs: {
-              verify: {
-                steps: [
-                  ...any.listOf(any.simpleObject),
-                  ...this.legacyReporting ? [{run: 'npm run coverage:report'}] : [],
-                  ...this.githubAction ? [{uses: `codecov/codecov-action@v${any.integer()}`}] : []
-                ]
-              }
-            }
-          })
-        }
-      }
-    },
+    ...stubGithubWorkflow(this.githubWorkflow, this.legacyReporting, this.githubAction),
     node_modules: stubbedNodeModules,
     'package.json': JSON.stringify({
       scripts: {...this.legacyReporting && {'coverage:report': any.string()}}
@@ -79,8 +83,15 @@ When('the project is lifted', async function () {
 });
 
 When('Codecov is removed from the project', async function () {
-  // Write code here that turns the phrase above into concrete actions
-  return 'pending';
+  // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
+  const {remove} = require('@form8ion/codecov');
+
+  stubbedFs({
+    ...stubGithubWorkflow(this.githubWorkflow, this.legacyReporting, this.githubAction),
+    node_modules: stubbedNodeModules
+  });
+
+  this.result = await remove();
 });
 
 Then('empty results are returned', async function () {
