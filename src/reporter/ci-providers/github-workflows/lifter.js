@@ -1,6 +1,8 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
 import {dump, load} from 'js-yaml';
 import {fileExists} from '@form8ion/core';
+
+import {findCodecovActionIn, scaffold as scaffoldCodecov} from './codecov-action.js';
 
 function getPathToWorkflowFile(projectRoot) {
   return `${projectRoot}/.github/workflows/node-ci.yml`;
@@ -16,7 +18,7 @@ export async function lift({projectRoot}) {
   const workflowDetails = load(await fs.readFile(pathToWorkflowFile, 'utf-8'));
   const {jobs: {verify: {steps}}} = workflowDetails;
 
-  if (!steps.find(step => step.uses?.startsWith('codecov/codecov-action'))) {
+  if (!findCodecovActionIn(steps)) {
     const stepsWithLegacyReportingRemoved = steps.filter(({run}) => 'npm run coverage:report' !== run);
 
     await fs.writeFile(
@@ -27,7 +29,7 @@ export async function lift({projectRoot}) {
           ...workflowDetails.jobs,
           verify: {
             ...workflowDetails.jobs.verify,
-            steps: [...stepsWithLegacyReportingRemoved, {uses: 'codecov/codecov-action@v3'}]
+            steps: [...stepsWithLegacyReportingRemoved, scaffoldCodecov()]
           }
         }
       })
