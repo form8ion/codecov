@@ -6,18 +6,24 @@ import any from '@travi/any';
 import sinon from 'sinon';
 import {assert} from 'chai';
 
+import * as codecovAction from './codecov-action.js';
 import {lift as configureGithubWorkflow, test as projectIsVerifiedWithAGithubWorkflow} from './lifter.js';
 
 suite('github workflow lifter', () => {
   let sandbox;
   const projectRoot = any.string();
   const pathToWorkflowFile = `${projectRoot}/.github/workflows/node-ci.yml`;
+  const codecovActionDefinition = any.simpleObject();
 
   setup(() => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(fs, 'readFile');
     sandbox.stub(fs, 'writeFile');
+    sandbox.stub(codecovAction, 'scaffold');
+    sandbox.stub(codecovAction, 'findCodecovActionIn');
+
+    codecovAction.scaffold.returns(codecovActionDefinition);
   });
 
   teardown(() => sandbox.restore());
@@ -60,23 +66,25 @@ suite('github workflow lifter', () => {
         ...otherTopLevelProperties,
         jobs: {
           ...otherJobs,
-          verify: {...otherVerifyProperties, steps: [...existingVerifySteps, {uses: 'codecov/codecov-action@v3'}]}
+          verify: {...otherVerifyProperties, steps: [...existingVerifySteps, codecovActionDefinition]}
         }
       })
     );
   });
 
   test('that the codecov action is not added if it is already included', async () => {
+    const existingSteps = any.listOf(any.simpleObject);
     fs.readFile.withArgs(pathToWorkflowFile, 'utf-8').resolves(dump({
       ...(any.simpleObject()),
       jobs: {
         ...(any.simpleObject()),
         verify: {
           ...(any.simpleObject()),
-          steps: [...any.listOf(any.simpleObject), {uses: 'codecov/codecov-action@v3'}]
+          steps: existingSteps
         }
       }
     }));
+    codecovAction.findCodecovActionIn.withArgs(existingSteps).returns(any.simpleObject());
 
     await configureGithubWorkflow({projectRoot});
 
@@ -96,6 +104,7 @@ suite('github workflow lifter', () => {
       }
     };
     fs.readFile.withArgs(pathToWorkflowFile, 'utf-8').resolves(dump(existingWorkflowContents));
+    codecovAction.findCodecovActionIn.returns(undefined);
 
     await configureGithubWorkflow({projectRoot});
 
@@ -106,7 +115,10 @@ suite('github workflow lifter', () => {
         ...otherTopLevelProperties,
         jobs: {
           ...otherJobs,
-          verify: {...otherVerifyProperties, steps: [...otherVerifySteps, {uses: 'codecov/codecov-action@v3'}]}
+          verify: {
+            ...otherVerifyProperties,
+            steps: [...otherVerifySteps, codecovActionDefinition]
+          }
         }
       })
     );
