@@ -15,7 +15,7 @@ export function assertDependenciesWereRemoved(execa, packageManager, dependencyN
   td.verify(execa(packageManager, ['remove', ...dependencyNames]));
 }
 
-function stubGithubWorkflow(githubWorkflow, legacyReporting, githubAction) {
+function stubGithubWorkflows(githubWorkflow, legacyReporting, githubAction) {
   return githubWorkflow && {
     '.github': {
       workflows: {
@@ -68,7 +68,7 @@ When('the project is lifted', async function () {
   const {lift} = require('@form8ion/codecov');
 
   stubbedFs({
-    ...stubGithubWorkflow(this.githubWorkflow, this.legacyReporting, this.githubAction),
+    ...stubGithubWorkflows(this.githubWorkflow, this.legacyReporting, this.githubAction),
     node_modules: stubbedNodeModules,
     'package.json': JSON.stringify({
       scripts: {...this.legacyReporting && {'coverage:report': any.string()}}
@@ -86,12 +86,14 @@ When('Codecov is removed from the project', async function () {
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
   const {remove} = require('@form8ion/codecov');
 
+  this.githubWorkflows = stubGithubWorkflows(this.githubWorkflow, this.legacyReporting, this.githubAction);
+
   stubbedFs({
-    ...stubGithubWorkflow(this.githubWorkflow, this.legacyReporting, this.githubAction),
+    ...this.githubWorkflows,
     node_modules: stubbedNodeModules
   });
 
-  this.result = await remove();
+  this.result = await remove({projectRoot: process.cwd()});
 });
 
 Then('empty results are returned', async function () {
