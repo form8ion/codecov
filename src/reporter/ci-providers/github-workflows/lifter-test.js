@@ -1,6 +1,5 @@
 import {promises as fs} from 'node:fs';
 import {dump} from 'js-yaml';
-import core from '@form8ion/core';
 
 import any from '@travi/any';
 import sinon from 'sinon';
@@ -8,7 +7,7 @@ import {assert} from 'chai';
 
 import * as codecovAction from './codecov-action.js';
 import * as workflow from './workflow.js';
-import {lift as configureGithubWorkflow, test as projectIsVerifiedWithAGithubWorkflow} from './lifter.js';
+import {lift as configureGithubWorkflow} from './lifter.js';
 
 suite('github workflow lifter', () => {
   let sandbox;
@@ -30,24 +29,6 @@ suite('github workflow lifter', () => {
   });
 
   teardown(() => sandbox.restore());
-
-  suite('github workflow predicate', () => {
-    setup(() => {
-      sandbox.stub(core, 'fileExists');
-    });
-
-    test('that `true` is returned if the workflow file exists', async () => {
-      core.fileExists.withArgs(pathToWorkflowFile).resolves(true);
-
-      assert.isTrue(await projectIsVerifiedWithAGithubWorkflow({projectRoot}));
-    });
-
-    test('that `false` is returned if the workflow file exists', async () => {
-      core.fileExists.withArgs(pathToWorkflowFile).resolves(false);
-
-      assert.isFalse(await projectIsVerifiedWithAGithubWorkflow({projectRoot}));
-    });
-  });
 
   test('that the codecov action is added to the verify job', async () => {
     const otherTopLevelProperties = any.simpleObject();

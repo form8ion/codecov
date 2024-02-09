@@ -26,7 +26,7 @@ Given('the GitHub Action is configured', async function () {
 });
 
 Given('a CI workflow is not defined', async function () {
-  this.githubWorkflow = true;
+  this.githubWorkflow = false;
 });
 
 Then('the workflow is configured to report using the GitHub Action', async function () {

@@ -6,7 +6,6 @@ Feature: Remove GitHub Action
     When Codecov is removed from the project
     Then the codecov action is not used in the workflow
 
-  @wip
   Scenario: CI workflow does not exist
     Given a CI workflow is not defined
     When Codecov is removed from the project

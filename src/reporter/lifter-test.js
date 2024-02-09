@@ -5,6 +5,7 @@ import {assert} from 'chai';
 import any from '@travi/any';
 
 import * as execa from '../../thirdparty-wrappers/execa.js';
+import * as githubWorkflowPredicate from './ci-providers/github-workflows/predicate.js';
 import * as githubWorkflow from './ci-providers/github-workflows/lifter.js';
 import liftReporting from './lifter.js';
 
@@ -21,7 +22,7 @@ suite('reporting lifter', () => {
     sandbox.stub(fs, 'writeFile');
     sandbox.stub(execa, 'default');
     sandbox.stub(githubWorkflow, 'lift');
-    sandbox.stub(githubWorkflow, 'test');
+    sandbox.stub(githubWorkflowPredicate, 'default');
   });
 
   teardown(() => sandbox.restore());
@@ -34,7 +35,7 @@ suite('reporting lifter', () => {
       scripts: {...otherScripts, 'coverage:report': any.string()}
     };
     fs.readFile.withArgs(pathToPackageJson, 'utf-8').resolves(JSON.stringify(existingPackageContents));
-    githubWorkflow.test.resolves(false);
+    githubWorkflowPredicate.default.resolves(false);
 
     const {nextSteps} = await liftReporting({projectRoot, packageManager});
 
@@ -63,11 +64,11 @@ suite('reporting lifter', () => {
         ...any.simpleObject(),
         scripts: {...any.simpleObject(), 'coverage:report': any.string()}
       }));
-    githubWorkflow.test.withArgs({projectRoot}).resolves(true);
+    githubWorkflowPredicate.default.withArgs({projectRoot}).resolves(true);
 
     const {nextSteps} = await liftReporting({projectRoot, packageManager});
 
-    assert.calledOnce(githubWorkflow.test);
+    assert.calledOnce(githubWorkflowPredicate.default);
     assert.calledWith(githubWorkflow.lift, {projectRoot});
     assert.isUndefined(nextSteps);
   });

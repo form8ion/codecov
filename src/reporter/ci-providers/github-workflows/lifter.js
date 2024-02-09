@@ -1,13 +1,8 @@
 import {promises as fs} from 'node:fs';
 import {dump, load} from 'js-yaml';
-import {fileExists} from '@form8ion/core';
 
 import {findCodecovActionIn, scaffold as scaffoldCodecov} from './codecov-action.js';
 import {getPathToWorkflowFile} from './workflow.js';
-
-export function test({projectRoot}) {
-  return fileExists(getPathToWorkflowFile(projectRoot));
-}
 
 export async function lift({projectRoot}) {
   const pathToWorkflowFile = getPathToWorkflowFile(projectRoot);
