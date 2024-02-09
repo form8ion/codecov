@@ -3,10 +3,7 @@ import {dump, load} from 'js-yaml';
 import {fileExists} from '@form8ion/core';
 
 import {findCodecovActionIn, scaffold as scaffoldCodecov} from './codecov-action.js';
-
-function getPathToWorkflowFile(projectRoot) {
-  return `${projectRoot}/.github/workflows/node-ci.yml`;
-}
+import {getPathToWorkflowFile} from './workflow.js';
 
 export function test({projectRoot}) {
   return fileExists(getPathToWorkflowFile(projectRoot));
