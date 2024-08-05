@@ -1,4 +1,28 @@
 {
   "$schema":"https://docs.renovatebot.com/renovate-schema.json",
   "extends":["github>form8ion/renovate-config:js-package"]
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update action versions in scaffolded workflow",
+      "fileMatch": [
+        "^src/reporter/ci-providers/github-workflows/.+\\.js$"
+      ],
+      "matchStrings": [
+        "\\suses: '(?<depName>.*?)@(?<currentValue>.*?)'"
+      ],
+      "datasourceTemplate": "github-tags"
+    }
+  ],
+  "packageRules": [
+    {
+      "semanticCommitType": "fix",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDepTypes": [
+        "github-actions"
+      ]
+    }
+  ]
 }
