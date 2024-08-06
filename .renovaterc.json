@@ -9,7 +9,7 @@
         "^src/reporter/ci-providers/github-workflows/.+\\.js$"
       ],
       "matchStrings": [
-        "\\suses: '(?<depName>.*?)@(?<currentValue>.*?)'"
+        "uses: '(?<depName>.*?)@(?<currentValue>.*?)'"
       ],
       "datasourceTemplate": "github-tags"
     }
