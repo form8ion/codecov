@@ -8,7 +8,7 @@ suite('codecov action', () => {
 
   suite('scaffold', () => {
     test('that the codecov action is scaffolded', () => {
-      assert.deepEqual(scaffold(), {uses: 'codecov/codecov-action@v3'});
+      assert.deepEqual(scaffold(), {uses: 'codecov/codecov-action@v3.1.6'});
     });
   });
 
