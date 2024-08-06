@@ -11,8 +11,7 @@
       "matchStrings": [
         "uses: '(?<depName>.*?)@(?<currentValue>.*?)'"
       ],
-      "datasourceTemplate": "github-tags",
-      "semanticCommitType": "fix"
+      "datasourceTemplate": "github-tags"
     }
   ],
   "packageRules": [
