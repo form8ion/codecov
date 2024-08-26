@@ -1,5 +1,6 @@
 import {promises as fs} from 'node:fs';
 import {dump} from 'js-yaml';
+import workflowsCore from '@form8ion/github-workflows-core';
 
 import any from '@travi/any';
 import sinon from 'sinon';
@@ -16,7 +17,7 @@ suite('action remover', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(fs, 'readFile');
-    sandbox.stub(fs, 'writeFile');
+    sandbox.stub(workflowsCore, 'writeWorkflowFile');
     sandbox.stub(workflow, 'getPathToWorkflowFile');
     sandbox.stub(action, 'removeCodecovActionFrom');
   });
@@ -45,18 +46,21 @@ suite('action remover', () => {
     await remove({projectRoot});
 
     assert.calledWith(
-      fs.writeFile,
-      pathToWorkflowFile,
-      dump({
-        ...existingWorkflowDefinition,
-        jobs: {
-          ...existingWorkflowDefinition.jobs,
-          verify: {
-            ...existingWorkflowDefinition.jobs.verify,
-            steps: updatedSteps
+      workflowsCore.writeWorkflowFile,
+      {
+        projectRoot,
+        name: 'node-ci',
+        config: {
+          ...existingWorkflowDefinition,
+          jobs: {
+            ...existingWorkflowDefinition.jobs,
+            verify: {
+              ...existingWorkflowDefinition.jobs.verify,
+              steps: updatedSteps
+            }
           }
         }
-      })
+      }
     );
   });
 });

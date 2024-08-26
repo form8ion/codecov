@@ -1,5 +1,6 @@
 import {promises as fs} from 'node:fs';
-import {dump, load} from 'js-yaml';
+import {load} from 'js-yaml';
+import {writeWorkflowFile} from '@form8ion/github-workflows-core';
 
 import {findCodecovActionIn, scaffold as scaffoldCodecov} from './codecov-action.js';
 import {getPathToWorkflowFile} from './workflow.js';
@@ -13,9 +14,10 @@ export async function lift({projectRoot}) {
   if (!findCodecovActionIn(steps)) {
     const stepsWithLegacyReportingRemoved = steps.filter(({run}) => 'npm run coverage:report' !== run);
 
-    await fs.writeFile(
-      pathToWorkflowFile,
-      dump({
+    await writeWorkflowFile({
+      projectRoot,
+      name: 'node-ci',
+      config: {
         ...workflowDetails,
         jobs: {
           ...workflowDetails.jobs,
@@ -24,7 +26,7 @@ export async function lift({projectRoot}) {
             steps: [...stepsWithLegacyReportingRemoved, scaffoldCodecov()]
           }
         }
-      })
-    );
+      }
+    });
   }
 }

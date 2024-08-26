@@ -1,5 +1,6 @@
 import {promises as fs} from 'node:fs';
 import {dump} from 'js-yaml';
+import workflowsCore from '@form8ion/github-workflows-core';
 
 import any from '@travi/any';
 import sinon from 'sinon';
@@ -19,7 +20,7 @@ suite('github workflow lifter', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(fs, 'readFile');
-    sandbox.stub(fs, 'writeFile');
+    sandbox.stub(workflowsCore, 'writeWorkflowFile');
     sandbox.stub(codecovAction, 'scaffold');
     sandbox.stub(codecovAction, 'findCodecovActionIn');
     sandbox.stub(workflow, 'getPathToWorkflowFile');
@@ -44,15 +45,18 @@ suite('github workflow lifter', () => {
     await configureGithubWorkflow({projectRoot});
 
     assert.calledWith(
-      fs.writeFile,
-      pathToWorkflowFile,
-      dump({
-        ...otherTopLevelProperties,
-        jobs: {
-          ...otherJobs,
-          verify: {...otherVerifyProperties, steps: [...existingVerifySteps, codecovActionDefinition]}
+      workflowsCore.writeWorkflowFile,
+      {
+        projectRoot,
+        name: 'node-ci',
+        config: {
+          ...otherTopLevelProperties,
+          jobs: {
+            ...otherJobs,
+            verify: {...otherVerifyProperties, steps: [...existingVerifySteps, codecovActionDefinition]}
+          }
         }
-      })
+      }
     );
   });
 
@@ -72,7 +76,7 @@ suite('github workflow lifter', () => {
 
     await configureGithubWorkflow({projectRoot});
 
-    assert.neverCalledWith(fs.writeFile, pathToWorkflowFile);
+    assert.notCalled(workflowsCore.writeWorkflowFile);
   });
 
   test('that the legacy reporting step is removed, if present', async () => {
@@ -93,18 +97,21 @@ suite('github workflow lifter', () => {
     await configureGithubWorkflow({projectRoot});
 
     assert.calledWith(
-      fs.writeFile,
-      pathToWorkflowFile,
-      dump({
-        ...otherTopLevelProperties,
-        jobs: {
-          ...otherJobs,
-          verify: {
-            ...otherVerifyProperties,
-            steps: [...otherVerifySteps, codecovActionDefinition]
+      workflowsCore.writeWorkflowFile,
+      {
+        projectRoot,
+        name: 'node-ci',
+        config: {
+          ...otherTopLevelProperties,
+          jobs: {
+            ...otherJobs,
+            verify: {
+              ...otherVerifyProperties,
+              steps: [...otherVerifySteps, codecovActionDefinition]
+            }
           }
         }
-      })
+      }
     );
   });
 });

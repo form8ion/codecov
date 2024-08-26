@@ -1,4 +1,5 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from 'node:fs';
+import {writePackageJson} from '@form8ion/javascript-core';
 
 import execa from '../../thirdparty-wrappers/execa.js';
 import {lift as liftCiProvider, test as ciProviderIsLiftable} from './ci-providers/index.js';
@@ -18,7 +19,7 @@ export default async function ({projectRoot, packageManager}) {
 
   if (scripts['coverage:report']) {
     parsedPackageContents.scripts = otherScripts;
-    await fs.writeFile(pathToPackageJson, JSON.stringify(parsedPackageContents));
+    await writePackageJson({projectRoot, config: parsedPackageContents});
 
     await execa(packageManager, ['remove', 'codecov']);
 

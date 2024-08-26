@@ -1,4 +1,5 @@
 import {promises as fs} from 'fs';
+import jsCore from '@form8ion/javascript-core';
 
 import sinon from 'sinon';
 import {assert} from 'chai';
@@ -19,7 +20,7 @@ suite('reporting lifter', () => {
     sandbox = sinon.createSandbox();
 
     sandbox.stub(fs, 'readFile');
-    sandbox.stub(fs, 'writeFile');
+    sandbox.stub(jsCore, 'writePackageJson');
     sandbox.stub(execa, 'default');
     sandbox.stub(githubWorkflow, 'lift');
     sandbox.stub(githubWorkflowPredicate, 'default');
@@ -50,9 +51,8 @@ suite('reporting lifter', () => {
 
     assert.calledWith(execa.default, packageManager, ['remove', 'codecov']);
     assert.calledWith(
-      fs.writeFile,
-      pathToPackageJson,
-      JSON.stringify({...otherTopLevelProperties, scripts: otherScripts})
+      jsCore.writePackageJson,
+      {projectRoot, config: {...otherTopLevelProperties, scripts: otherScripts}}
     );
     assert.notCalled(githubWorkflow.lift);
   });
@@ -79,6 +79,6 @@ suite('reporting lifter', () => {
 
     assert.deepEqual(await liftReporting({projectRoot}), {});
 
-    assert.neverCalledWith(fs.writeFile, pathToPackageJson);
+    assert.notCalled(jsCore.writePackageJson);
   });
 });
