@@ -1,7 +1,5 @@
-import {fileExists} from '@form8ion/core';
-
-import {getPathToWorkflowFile} from './workflow.js';
+import {workflowFileExists} from '@form8ion/github-workflows-core';
 
 export default function ({projectRoot}) {
-  return fileExists(getPathToWorkflowFile(projectRoot));
+  return workflowFileExists({projectRoot, name: 'node-ci'});
 }

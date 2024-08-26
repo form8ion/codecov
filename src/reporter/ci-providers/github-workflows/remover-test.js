@@ -5,7 +5,6 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 
 import * as action from './codecov-action.js';
-import * as workflow from './workflow.js';
 import remove from './remover.js';
 
 suite('action remover', () => {
@@ -16,7 +15,6 @@ suite('action remover', () => {
 
     sandbox.stub(workflowsCore, 'loadWorkflowFile');
     sandbox.stub(workflowsCore, 'writeWorkflowFile');
-    sandbox.stub(workflow, 'getPathToWorkflowFile');
     sandbox.stub(action, 'removeCodecovActionFrom');
   });
 
@@ -24,7 +22,6 @@ suite('action remover', () => {
 
   test('that the action is removed from the workflow', async () => {
     const projectRoot = any.string();
-    const pathToWorkflowFile = any.string();
     const existingSteps = any.listOf(any.simpleObject);
     const updatedSteps = any.listOf(any.simpleObject);
     const ciWorkflowName = 'node-ci';
@@ -38,7 +35,6 @@ suite('action remover', () => {
         }
       }
     };
-    workflow.getPathToWorkflowFile.withArgs(projectRoot).returns(pathToWorkflowFile);
     workflowsCore.loadWorkflowFile.withArgs({projectRoot, name: ciWorkflowName}).resolves(existingWorkflowDefinition);
     action.removeCodecovActionFrom.withArgs(existingSteps).returns(updatedSteps);
 

@@ -5,13 +5,11 @@ import sinon from 'sinon';
 import {assert} from 'chai';
 
 import * as codecovAction from './codecov-action.js';
-import * as workflow from './workflow.js';
 import {lift as configureGithubWorkflow} from './lifter.js';
 
 suite('github workflow lifter', () => {
   let sandbox;
   const projectRoot = any.string();
-  const pathToWorkflowFile = any.string();
   const codecovActionDefinition = any.simpleObject();
   const ciWorkflowName = 'node-ci';
 
@@ -22,10 +20,8 @@ suite('github workflow lifter', () => {
     sandbox.stub(workflowsCore, 'writeWorkflowFile');
     sandbox.stub(codecovAction, 'scaffold');
     sandbox.stub(codecovAction, 'findCodecovActionIn');
-    sandbox.stub(workflow, 'getPathToWorkflowFile');
 
     codecovAction.scaffold.returns(codecovActionDefinition);
-    workflow.getPathToWorkflowFile.withArgs(projectRoot).returns(pathToWorkflowFile);
   });
 
   teardown(() => sandbox.restore());
