@@ -1,5 +1,3 @@
-import {promises as fs} from 'node:fs';
-import {dump} from 'js-yaml';
 import workflowsCore from '@form8ion/github-workflows-core';
 
 import any from '@travi/any';
@@ -16,7 +14,7 @@ suite('action remover', () => {
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(fs, 'readFile');
+    sandbox.stub(workflowsCore, 'loadWorkflowFile');
     sandbox.stub(workflowsCore, 'writeWorkflowFile');
     sandbox.stub(workflow, 'getPathToWorkflowFile');
     sandbox.stub(action, 'removeCodecovActionFrom');
@@ -29,6 +27,7 @@ suite('action remover', () => {
     const pathToWorkflowFile = any.string();
     const existingSteps = any.listOf(any.simpleObject);
     const updatedSteps = any.listOf(any.simpleObject);
+    const ciWorkflowName = 'node-ci';
     const existingWorkflowDefinition = {
       ...any.simpleObject(),
       jobs: {
@@ -40,7 +39,7 @@ suite('action remover', () => {
       }
     };
     workflow.getPathToWorkflowFile.withArgs(projectRoot).returns(pathToWorkflowFile);
-    fs.readFile.withArgs(pathToWorkflowFile).resolves(dump(existingWorkflowDefinition), 'utf-8');
+    workflowsCore.loadWorkflowFile.withArgs({projectRoot, name: ciWorkflowName}).resolves(existingWorkflowDefinition);
     action.removeCodecovActionFrom.withArgs(existingSteps).returns(updatedSteps);
 
     await remove({projectRoot});
@@ -49,7 +48,7 @@ suite('action remover', () => {
       workflowsCore.writeWorkflowFile,
       {
         projectRoot,
-        name: 'node-ci',
+        name: ciWorkflowName,
         config: {
           ...existingWorkflowDefinition,
           jobs: {

@@ -1,5 +1,3 @@
-import {promises as fs} from 'node:fs';
-import {dump} from 'js-yaml';
 import workflowsCore from '@form8ion/github-workflows-core';
 
 import any from '@travi/any';
@@ -15,11 +13,12 @@ suite('github workflow lifter', () => {
   const projectRoot = any.string();
   const pathToWorkflowFile = any.string();
   const codecovActionDefinition = any.simpleObject();
+  const ciWorkflowName = 'node-ci';
 
   setup(() => {
     sandbox = sinon.createSandbox();
 
-    sandbox.stub(fs, 'readFile');
+    sandbox.stub(workflowsCore, 'loadWorkflowFile');
     sandbox.stub(workflowsCore, 'writeWorkflowFile');
     sandbox.stub(codecovAction, 'scaffold');
     sandbox.stub(codecovAction, 'findCodecovActionIn');
@@ -40,7 +39,7 @@ suite('github workflow lifter', () => {
       ...otherTopLevelProperties,
       jobs: {...otherJobs, verify: {...otherVerifyProperties, steps: existingVerifySteps}}
     };
-    fs.readFile.withArgs(pathToWorkflowFile, 'utf-8').resolves(dump(existingWorkflowContents));
+    workflowsCore.loadWorkflowFile.withArgs({projectRoot, name: ciWorkflowName}).resolves(existingWorkflowContents);
 
     await configureGithubWorkflow({projectRoot});
 
@@ -48,7 +47,7 @@ suite('github workflow lifter', () => {
       workflowsCore.writeWorkflowFile,
       {
         projectRoot,
-        name: 'node-ci',
+        name: ciWorkflowName,
         config: {
           ...otherTopLevelProperties,
           jobs: {
@@ -62,16 +61,18 @@ suite('github workflow lifter', () => {
 
   test('that the codecov action is not added if it is already included', async () => {
     const existingSteps = any.listOf(any.simpleObject);
-    fs.readFile.withArgs(pathToWorkflowFile, 'utf-8').resolves(dump({
-      ...(any.simpleObject()),
-      jobs: {
+    workflowsCore.loadWorkflowFile
+      .withArgs({projectRoot, name: ciWorkflowName})
+      .resolves({
         ...(any.simpleObject()),
-        verify: {
+        jobs: {
           ...(any.simpleObject()),
-          steps: existingSteps
+          verify: {
+            ...(any.simpleObject()),
+            steps: existingSteps
+          }
         }
-      }
-    }));
+      });
     codecovAction.findCodecovActionIn.withArgs(existingSteps).returns(any.simpleObject());
 
     await configureGithubWorkflow({projectRoot});
@@ -91,7 +92,7 @@ suite('github workflow lifter', () => {
         verify: {...otherVerifyProperties, steps: [...otherVerifySteps, {run: 'npm run coverage:report'}]}
       }
     };
-    fs.readFile.withArgs(pathToWorkflowFile, 'utf-8').resolves(dump(existingWorkflowContents));
+    workflowsCore.loadWorkflowFile.withArgs({projectRoot, name: ciWorkflowName}).resolves(existingWorkflowContents);
     codecovAction.findCodecovActionIn.returns(undefined);
 
     await configureGithubWorkflow({projectRoot});
@@ -100,7 +101,7 @@ suite('github workflow lifter', () => {
       workflowsCore.writeWorkflowFile,
       {
         projectRoot,
-        name: 'node-ci',
+        name: ciWorkflowName,
         config: {
           ...otherTopLevelProperties,
           jobs: {

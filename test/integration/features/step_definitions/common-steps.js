@@ -36,6 +36,7 @@ function stubGithubWorkflows(githubWorkflow, legacyReporting, githubAction) {
 }
 
 Before(function () {
+  this.projectRoot = process.cwd();
   this.vcsName = any.word();
   this.vcsOwner = any.word();
 
@@ -76,7 +77,7 @@ When('the project is lifted', async function () {
   });
 
   this.result = await lift({
-    projectRoot: process.cwd(),
+    projectRoot: this.projectRoot,
     packageManager: this.packageManager,
     vcs: {host: this.vcsHost, owner: this.vcsOwner, name: this.vcsName}
   });
