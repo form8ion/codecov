@@ -15,5 +15,5 @@ export function removeCodecovActionFrom(steps) {
 }
 
 export function scaffold() {
-  return {uses: 'codecov/codecov-action@v5.2.0'};
+  return {uses: 'codecov/codecov-action@v5.3.0'};
 }
