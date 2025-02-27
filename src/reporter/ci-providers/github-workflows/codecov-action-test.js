@@ -4,11 +4,11 @@ import any from '@travi/any';
 import {findCodecovActionIn, removeCodecovActionFrom, scaffold} from './codecov-action.js';
 
 suite('codecov action', () => {
-  const codecovAction = {...any.simpleObject(), uses: 'codecov/codecov-action@v5.3.1'};
+  const codecovAction = {...any.simpleObject(), uses: 'codecov/codecov-action@v5.4.0'};
 
   suite('scaffold', () => {
     test('that the codecov action is scaffolded', () => {
-      assert.deepEqual(scaffold(), {uses: 'codecov/codecov-action@v5.3.1'});
+      assert.deepEqual(scaffold(), {uses: 'codecov/codecov-action@v5.4.0'});
     });
   });
 
