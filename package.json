@@ -3,6 +3,7 @@
   "description": "code coverage service plugin for form8ion",
   "license": "MIT",
   "version": "0.0.0-semantically-released",
+  "type": "commonjs",
   "engines": {
     "node": "^18.17.0 || >=20.6.1"
   },
