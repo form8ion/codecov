@@ -1,22 +1,15 @@
-import sinon from 'sinon';
-import any from '@travi/any';
-import {assert} from 'chai';
+import got from 'got';
 
-import * as got from '../../thirdparty-wrappers/got.js';
+import {expect, describe, it, vi} from 'vitest';
+import {when} from 'vitest-when';
+import any from '@travi/any';
+
 import fetchRepositoryDetails from './repository-details-fetcher.js';
 
-suite('repository details fetcher', () => {
-  let sandbox;
+vi.mock('got');
 
-  setup(() => {
-    sandbox = sinon.createSandbox();
-
-    sandbox.stub(got, 'default');
-  });
-
-  teardown(() => sandbox.restore());
-
-  test('that repository details are fetched from the codecov api', async () => {
+describe('repository-details-fetcher', () => {
+  it('should fetch repository details from the codecov api', async () => {
     const apiAccessToken = any.string();
     const vcsHost = any.word();
     const vcsOwner = any.word();
@@ -28,13 +21,13 @@ suite('repository details fetcher', () => {
       name: vcsName
     };
     const repoDetails = any.simpleObject();
-    got.default
-      .withArgs(
+    when(got)
+      .calledWith(
         `https://codecov.io/api/gh/${vcsOwner}/${vcsName}`,
         {headers: {Authorization: apiAccessToken}, responseType: 'json'}
       )
-      .resolves({body: {repo: repoDetails}});
+      .thenResolve({body: {repo: repoDetails}});
 
-    assert.equal(await fetchRepositoryDetails({vcs, apiAccessToken}), repoDetails);
+    expect(await fetchRepositoryDetails({vcs, apiAccessToken})).toEqual(repoDetails);
   });
 });
