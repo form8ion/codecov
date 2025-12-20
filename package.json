@@ -92,7 +92,7 @@
     "js-yaml": "4.1.1",
     "lockfile-lint": "4.14.1",
     "ls-engines": "0.9.4",
-    "mocha": "11.1.0",
+    "mocha": "11.7.5",
     "mock-fs": "5.5.0",
     "nock": "14.0.10",
     "npm-run-all2": "7.0.2",
