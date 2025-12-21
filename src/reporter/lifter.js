@@ -1,10 +1,10 @@
 import {promises as fs} from 'node:fs';
 import {writePackageJson} from '@form8ion/javascript-core';
 
-import execa from '../../thirdparty-wrappers/execa.js';
+import execa from 'execa';
 import {lift as liftCiProvider, test as ciProviderIsLiftable} from './ci-providers/index.js';
 
-export default async function ({projectRoot, packageManager}) {
+export default async function liftReporter({projectRoot, packageManager}) {
   const pathToPackageJson = `${projectRoot}/package.json`;
 
   const [ciProviderCanBeLifted, existingPackageContents] = await Promise.all([
