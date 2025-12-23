@@ -1,5 +1,6 @@
-import {resolve} from 'node:path';
+import {dirname, resolve} from 'node:path';
 import {dump} from 'js-yaml';
+import {fileURLToPath} from 'node:url';
 import {packageManagers} from '@form8ion/javascript-core';
 
 import {After, Before, Then, When} from '@cucumber/cucumber';
@@ -7,8 +8,9 @@ import stubbedFs from 'mock-fs';
 import any from '@travi/any';
 import {assert} from 'chai';
 import nock from 'nock';
-import td from 'testdouble';
+import * as td from 'testdouble';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));          // eslint-disable-line no-underscore-dangle
 const stubbedNodeModules = stubbedFs.load(resolve(__dirname, '..', '..', '..', '..', 'node_modules'));
 
 export function assertDependenciesWereRemoved(execa, packageManager, dependencyNames) {
@@ -35,12 +37,12 @@ function stubGithubWorkflows(githubWorkflow, legacyReporting, githubAction) {
   };
 }
 
-Before(function () {
+Before(async function () {
   this.projectRoot = process.cwd();
   this.vcsName = any.word();
   this.vcsOwner = any.word();
 
-  this.execa = td.replace('execa');
+  this.execa = (await td.replaceEsm('execa')).execa;
 
   nock.disableNetConnect();
 });
@@ -53,7 +55,7 @@ After(function () {
 
 When('the project is scaffolded', async function () {
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  const {scaffold} = require('@form8ion/codecov');
+  const {scaffold} = await import('@form8ion/codecov');
 
   stubbedFs({
     node_modules: stubbedNodeModules
@@ -66,7 +68,7 @@ When('the project is lifted', async function () {
   this.packageManager = any.fromList(Object.values(packageManagers));
 
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  const {lift} = require('@form8ion/codecov');
+  const {lift} = await import('@form8ion/codecov');
 
   stubbedFs({
     ...stubGithubWorkflows(this.githubWorkflow, this.legacyReporting, this.githubAction),
@@ -85,7 +87,7 @@ When('the project is lifted', async function () {
 
 When('Codecov is removed from the project', async function () {
   // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
-  const {remove} = require('@form8ion/codecov');
+  const {remove} = await import('@form8ion/codecov');
 
   this.githubWorkflows = stubGithubWorkflows(this.githubWorkflow, this.legacyReporting, this.githubAction);
 
