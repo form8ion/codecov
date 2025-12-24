@@ -1,5 +1,5 @@
 import {promises as fs} from 'node:fs';
-import execa from 'execa';
+import {execa} from 'execa';
 import {writePackageJson} from '@form8ion/javascript-core';
 
 import {it, describe, vi, expect} from 'vitest';
