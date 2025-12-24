@@ -60,7 +60,7 @@
     "@form8ion/javascript-core": "^11.0.0",
     "deepmerge": "^4.3.1",
     "execa": "^6.1.0",
-    "got": "^11.8.5"
+    "got": "^14.0.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "12.4.0",
