@@ -13,37 +13,18 @@ vi.mock('./codecov-action.js');
 describe('action remover', () => {
   it('should remove the action from the workflow', async () => {
     const projectRoot = any.string();
-    const existingSteps = any.listOf(any.simpleObject);
-    const updatedSteps = any.listOf(any.simpleObject);
+    const updatedJobs = any.simpleObject();
     const ciWorkflowName = 'node-ci';
-    const existingWorkflowDefinition = {
-      ...any.simpleObject(),
-      jobs: {
-        ...any.simpleObject(),
-        verify: {
-          ...any.simpleObject(),
-          steps: existingSteps
-        }
-      }
-    };
+    const existingWorkflowDefinition = {...any.simpleObject(), jobs: any.simpleObject()};
     when(loadWorkflowFile).calledWith({projectRoot, name: ciWorkflowName}).thenResolve(existingWorkflowDefinition);
-    when(removeCodecovActionFrom).calledWith(existingSteps).thenReturn(updatedSteps);
+    when(removeCodecovActionFrom).calledWith(existingWorkflowDefinition.jobs).thenReturn(updatedJobs);
 
     await remove({projectRoot});
 
     expect(writeWorkflowFile).toHaveBeenCalledWith({
       projectRoot,
       name: ciWorkflowName,
-      config: {
-        ...existingWorkflowDefinition,
-        jobs: {
-          ...existingWorkflowDefinition.jobs,
-          verify: {
-            ...existingWorkflowDefinition.jobs.verify,
-            steps: updatedSteps
-          }
-        }
-      }
+      config: {...existingWorkflowDefinition, jobs: updatedJobs}
     });
   });
 });

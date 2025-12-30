@@ -3,7 +3,7 @@ import {removeCodecovActionFrom} from './codecov-action.js';
 
 export default async function ({projectRoot}) {
   const existingConfig = await loadWorkflowFile({projectRoot, name: 'node-ci'});
-  existingConfig.jobs.verify.steps = removeCodecovActionFrom(existingConfig.jobs.verify.steps);
+  existingConfig.jobs = removeCodecovActionFrom(existingConfig.jobs);
 
   await writeWorkflowFile({projectRoot, name: 'node-ci', config: existingConfig});
 }
