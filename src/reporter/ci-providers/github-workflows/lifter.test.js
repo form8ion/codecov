@@ -4,10 +4,12 @@ import {it, describe, vi, expect, beforeEach} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
-import {findCodecovActionIn, scaffold as scaffoldCodecov} from './codecov-action.js';
+import {test as codecovActionExistsInSteps} from './action/index.js';
+import {scaffold as scaffoldCodecov} from './codecov-action.js';
 import {lift as configureGithubWorkflow} from './lifter.js';
 
 vi.mock('@form8ion/github-workflows-core');
+vi.mock('./action/index.js');
 vi.mock('./codecov-action.js');
 
 describe('github workflow lifter', () => {
@@ -62,7 +64,7 @@ describe('github workflow lifter', () => {
           }
         }
       });
-    when(findCodecovActionIn).calledWith(existingSteps).thenReturn(any.simpleObject());
+    when(codecovActionExistsInSteps).calledWith(existingSteps).thenReturn(true);
 
     await configureGithubWorkflow({projectRoot});
 
@@ -82,7 +84,7 @@ describe('github workflow lifter', () => {
       }
     };
     when(loadWorkflowFile).calledWith({projectRoot, name: ciWorkflowName}).thenResolve(existingWorkflowContents);
-    when(findCodecovActionIn).calledWith().thenReturn(undefined);
+    when(codecovActionExistsInSteps).calledWith().thenReturn(false);
 
     await configureGithubWorkflow({projectRoot});
 
