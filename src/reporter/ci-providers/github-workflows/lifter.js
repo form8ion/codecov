@@ -1,7 +1,6 @@
 import {loadWorkflowFile, writeWorkflowFile} from '@form8ion/github-workflows-core';
 
-import {test as codecovActionExistsInSteps} from './action/index.js';
-import {scaffold as scaffoldCodecov} from './codecov-action.js';
+import {test as codecovActionExistsInSteps, scaffold as scaffoldAction} from './action/index.js';
 
 export async function lift({projectRoot}) {
   const ciWorkflowName = 'node-ci';
@@ -21,7 +20,7 @@ export async function lift({projectRoot}) {
           ...workflowDetails.jobs,
           verify: {
             ...workflowDetails.jobs.verify,
-            steps: [...stepsWithLegacyReportingRemoved, scaffoldCodecov()]
+            steps: [...stepsWithLegacyReportingRemoved, scaffoldAction()]
           }
         }
       }

@@ -4,13 +4,11 @@ import {it, describe, vi, expect, beforeEach} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
-import {test as codecovActionExistsInSteps} from './action/index.js';
-import {scaffold as scaffoldCodecov} from './codecov-action.js';
+import {test as codecovActionExistsInSteps, scaffold as scaffoldAction} from './action/index.js';
 import {lift as configureGithubWorkflow} from './lifter.js';
 
 vi.mock('@form8ion/github-workflows-core');
 vi.mock('./action/index.js');
-vi.mock('./codecov-action.js');
 
 describe('github workflow lifter', () => {
   const projectRoot = any.string();
@@ -18,7 +16,7 @@ describe('github workflow lifter', () => {
   const ciWorkflowName = 'node-ci';
 
   beforeEach(() => {
-    when(scaffoldCodecov).calledWith().thenReturn(codecovActionDefinition);
+    when(scaffoldAction).calledWith().thenReturn(codecovActionDefinition);
   });
 
   it('should add the codecov action to the verify job', async () => {

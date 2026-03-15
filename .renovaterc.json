@@ -8,7 +8,7 @@
       "customType": "regex",
       "description": "Update action versions in scaffolded workflow",
       "managerFilePatterns": [
-        "/^src/reporter/ci-providers/github-workflows/codecov-action.+\\.js$/"
+        "/^src/reporter/ci-providers/github-workflows/action/action/scaffolder.+\\.js$/"
       ],
       "matchStrings": [
         "uses: '.*@(?<currentValue>.*?)'"
