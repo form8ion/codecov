@@ -27,7 +27,6 @@ Feature: Lift Reporting
     Then the workflow is configured to report using the GitHub Action
     And no next-step is returned for configuring CI reporting
 
-  @wip
   Scenario: GitHub Workflow as CI with Action configured without token
     Given CI is a GitHub workflow
     And the GitHub Action is configured without passing the token

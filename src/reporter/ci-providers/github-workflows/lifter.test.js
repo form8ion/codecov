@@ -4,7 +4,7 @@ import {describe, expect, it, vi} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
-import {test as codecovActionExistsInSteps, lift as liftSteps} from './steps/index.js';
+import {lift as liftSteps} from './steps/index.js';
 import {lift as configureGithubWorkflow} from './lifter.js';
 
 vi.mock('@form8ion/github-workflows-core');
@@ -43,26 +43,5 @@ describe('github workflow lifter', () => {
         }
       }
     });
-  });
-
-  it('should not add the codecov action if it is already included', async () => {
-    const existingSteps = any.listOf(any.simpleObject);
-    when(loadWorkflowFile)
-      .calledWith({projectRoot, name: ciWorkflowName})
-      .thenResolve({
-        ...(any.simpleObject()),
-        jobs: {
-          ...(any.simpleObject()),
-          verify: {
-            ...(any.simpleObject()),
-            steps: existingSteps
-          }
-        }
-      });
-    when(codecovActionExistsInSteps).calledWith(existingSteps).thenReturn(true);
-
-    await configureGithubWorkflow({projectRoot});
-
-    expect(writeWorkflowFile).not.toHaveBeenCalled();
   });
 });
