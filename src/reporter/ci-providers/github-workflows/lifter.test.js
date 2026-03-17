@@ -4,10 +4,12 @@ import {it, describe, vi, expect, beforeEach} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
-import {test as codecovActionExistsInSteps, scaffold as scaffoldAction} from './action/index.js';
+import {test as codecovActionExistsInSteps} from './steps/index.js';
+import {scaffold as scaffoldAction} from './action/index.js';
 import {lift as configureGithubWorkflow} from './lifter.js';
 
 vi.mock('@form8ion/github-workflows-core');
+vi.mock('./steps/index.js');
 vi.mock('./action/index.js');
 
 describe('github workflow lifter', () => {

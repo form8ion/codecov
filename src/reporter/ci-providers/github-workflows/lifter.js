@@ -1,6 +1,7 @@
 import {loadWorkflowFile, writeWorkflowFile} from '@form8ion/github-workflows-core';
 
-import {test as codecovActionExistsInSteps, scaffold as scaffoldAction} from './action/index.js';
+import {test as codecovActionExistsInSteps} from './steps/index.js';
+import {scaffold as scaffoldAction} from './action/index.js';
 
 export async function lift({projectRoot}) {
   const ciWorkflowName = 'node-ci';
