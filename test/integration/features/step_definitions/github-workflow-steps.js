@@ -4,17 +4,25 @@ import {loadWorkflowFile} from '@form8ion/github-workflows-core';
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 
-async function assertCodecovActionFoundTimes(projectRoot, expectedOccurrences) {
-  const {jobs: {verify: {steps}}} = await loadWorkflowFile({projectRoot, name: 'node-ci'});
+async function assertCodecovActionFoundTimes(projectRoot, expectedOccurrencesCount) {
+  const {jobs: {verify: {steps}}} = await loadWorkflowFile({
+    projectRoot,
+    name: 'node-ci'
+  });
 
-  const codecovActionOccurrences = steps.filter(step => step.uses?.startsWith('codecov/codecov-action')).length;
+  const codecovActionOccurrences = steps.filter(step => step.uses?.startsWith('codecov/codecov-action'));
+  const codecovActionOccurrencesCount = codecovActionOccurrences.length;
 
   assert.equal(
-    codecovActionOccurrences,
-    expectedOccurrences,
+    codecovActionOccurrencesCount,
+    expectedOccurrencesCount,
     'Expected the Codecov action to be included in the `steps` list 1 time, '
-    + `but was included ${codecovActionOccurrences} times`
+    + `but was included ${codecovActionOccurrencesCount} times`
   );
+  if (1 === expectedOccurrencesCount) {
+    // eslint-disable-next-line no-template-curly-in-string
+    assert.deepEqual(codecovActionOccurrences[0].with, {token: '${{ secrets.CODECOV_TOKEN }}'});
+  }
 }
 
 Given('CI is a GitHub workflow', async function () {
@@ -23,6 +31,10 @@ Given('CI is a GitHub workflow', async function () {
 
 Given('the GitHub Action is configured', async function () {
   this.githubAction = true;
+});
+
+Given('the GitHub Action is configured without passing the token', async function () {
+  this.githubActionWithoutToken = true;
 });
 
 Given('a CI workflow is not defined', async function () {

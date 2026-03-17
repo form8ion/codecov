@@ -17,7 +17,7 @@ export function assertDependenciesWereRemoved(execa, packageManager, dependencyN
   td.verify(execa(packageManager, ['remove', ...dependencyNames]));
 }
 
-function stubGithubWorkflows(githubWorkflow, legacyReporting, githubAction) {
+function stubGithubWorkflows(githubWorkflow, legacyReporting, githubAction, githubActionWithoutToken) {
   return githubWorkflow && {
     '.github': {
       workflows: {
@@ -27,7 +27,14 @@ function stubGithubWorkflows(githubWorkflow, legacyReporting, githubAction) {
               steps: [
                 ...any.listOf(any.simpleObject),
                 ...legacyReporting ? [{run: 'npm run coverage:report'}] : [],
-                ...githubAction ? [{uses: `codecov/codecov-action@v${any.integer()}`}] : []
+                ...githubAction
+                  ? [{
+                    uses: `codecov/codecov-action@v${any.integer()}`,
+                    // eslint-disable-next-line no-template-curly-in-string
+                    with: {token: '${{ secrets.CODECOV_TOKEN }}'}
+                  }]
+                  : [],
+                ...githubActionWithoutToken ? [{uses: `codecov/codecov-action@v${any.integer()}`}] : []
               ]
             }
           }
@@ -71,7 +78,7 @@ When('the project is lifted', async function () {
   const {lift} = await import('@form8ion/codecov');
 
   stubbedFs({
-    ...stubGithubWorkflows(this.githubWorkflow, this.legacyReporting, this.githubAction),
+    ...stubGithubWorkflows(this.githubWorkflow, this.legacyReporting, this.githubAction, this.githubActionWithoutToken),
     node_modules: stubbedNodeModules,
     'package.json': JSON.stringify({
       scripts: {...this.legacyReporting && {'coverage:report': any.string()}}
