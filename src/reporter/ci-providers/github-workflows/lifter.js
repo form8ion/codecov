@@ -1,7 +1,6 @@
 import {loadWorkflowFile, writeWorkflowFile} from '@form8ion/github-workflows-core';
 
-import {test as codecovActionExistsInSteps} from './steps/index.js';
-import {scaffold as scaffoldAction} from './action/index.js';
+import {test as codecovActionExistsInSteps, lift as liftSteps} from './steps/index.js';
 
 export async function lift({projectRoot}) {
   const ciWorkflowName = 'node-ci';
@@ -11,20 +10,18 @@ export async function lift({projectRoot}) {
 
   if (!codecovActionExistsInSteps(steps)) {
     const stepsWithLegacyReportingRemoved = steps.filter(({run}) => 'npm run coverage:report' !== run);
+    const jobs = {
+      ...workflowDetails.jobs,
+      verify: {
+        ...workflowDetails.jobs.verify,
+        steps: liftSteps(stepsWithLegacyReportingRemoved)
+      }
+    };
 
     await writeWorkflowFile({
       projectRoot,
       name: ciWorkflowName,
-      config: {
-        ...workflowDetails,
-        jobs: {
-          ...workflowDetails.jobs,
-          verify: {
-            ...workflowDetails.jobs.verify,
-            steps: [...stepsWithLegacyReportingRemoved, scaffoldAction()]
-          }
-        }
-      }
+      config: {...workflowDetails, jobs}
     });
   }
 }

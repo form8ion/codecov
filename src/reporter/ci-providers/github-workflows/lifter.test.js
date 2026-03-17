@@ -1,25 +1,19 @@
 import {loadWorkflowFile, writeWorkflowFile} from '@form8ion/github-workflows-core';
 
-import {it, describe, vi, expect, beforeEach} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
-import {test as codecovActionExistsInSteps} from './steps/index.js';
-import {scaffold as scaffoldAction} from './action/index.js';
+import {test as codecovActionExistsInSteps, lift as liftSteps} from './steps/index.js';
 import {lift as configureGithubWorkflow} from './lifter.js';
 
 vi.mock('@form8ion/github-workflows-core');
 vi.mock('./steps/index.js');
-vi.mock('./action/index.js');
 
 describe('github workflow lifter', () => {
   const projectRoot = any.string();
-  const codecovActionDefinition = any.simpleObject();
   const ciWorkflowName = 'node-ci';
-
-  beforeEach(() => {
-    when(scaffoldAction).calledWith().thenReturn(codecovActionDefinition);
-  });
+  const liftedSteps = any.listOf(any.simpleObject);
 
   it('should add the codecov action to the verify job', async () => {
     const otherTopLevelProperties = any.simpleObject();
@@ -31,6 +25,7 @@ describe('github workflow lifter', () => {
       jobs: {...otherJobs, verify: {...otherVerifyProperties, steps: existingVerifySteps}}
     };
     when(loadWorkflowFile).calledWith({projectRoot, name: ciWorkflowName}).thenResolve(existingWorkflowContents);
+    when(liftSteps).calledWith(existingVerifySteps).thenReturn(liftedSteps);
 
     await configureGithubWorkflow({projectRoot});
 
@@ -43,7 +38,7 @@ describe('github workflow lifter', () => {
           ...otherJobs,
           verify: {
             ...otherVerifyProperties,
-            steps: [...existingVerifySteps, codecovActionDefinition]
+            steps: liftedSteps
           }
         }
       }
@@ -85,6 +80,7 @@ describe('github workflow lifter', () => {
     };
     when(loadWorkflowFile).calledWith({projectRoot, name: ciWorkflowName}).thenResolve(existingWorkflowContents);
     when(codecovActionExistsInSteps).calledWith().thenReturn(false);
+    when(liftSteps).calledWith(otherVerifySteps).thenReturn(liftedSteps);
 
     await configureGithubWorkflow({projectRoot});
 
@@ -97,7 +93,7 @@ describe('github workflow lifter', () => {
           ...otherJobs,
           verify: {
             ...otherVerifyProperties,
-            steps: [...otherVerifySteps, codecovActionDefinition]
+            steps: liftedSteps
           }
         }
       }
