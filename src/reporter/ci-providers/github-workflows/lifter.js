@@ -9,13 +9,9 @@ export async function lift({projectRoot}) {
   const {jobs: {verify: {steps}}} = workflowDetails;
 
   if (!codecovActionExistsInSteps(steps)) {
-    const stepsWithLegacyReportingRemoved = steps.filter(({run}) => 'npm run coverage:report' !== run);
     const jobs = {
       ...workflowDetails.jobs,
-      verify: {
-        ...workflowDetails.jobs.verify,
-        steps: liftSteps(stepsWithLegacyReportingRemoved)
-      }
+      verify: {...workflowDetails.jobs.verify, steps: liftSteps(steps)}
     };
 
     await writeWorkflowFile({
