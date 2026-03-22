@@ -15,9 +15,9 @@ describe('config scaffolder', () => {
 
     expect(writeConfigFile).toHaveBeenCalledWith({
       format: fileTypes.YAML,
-      config: {},
       path: projectRoot,
-      name: '.codecov'
+      name: '.codecov',
+      config: {comment: {layout: 'reach,diff,flags,tree'}}
     });
   });
 });

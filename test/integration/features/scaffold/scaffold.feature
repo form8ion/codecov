@@ -2,4 +2,5 @@ Feature: Scaffolder
 
   Scenario: Scaffold a project
     When the project is scaffolded
-    Then empty results are returned
+    Then the config file is created
+    And empty results are returned
