@@ -16,10 +16,12 @@ nock('https://codecov.io/')
 // #### Execute
 
 (async () => {
-  await scaffold();
+  const projectRoot = process.cwd();
+
+  await scaffold({projectRoot});
 
   await lift({
-    projectRoot: process.cwd(),
+    projectRoot,
     packageManager: packageManagers.NPM,
     vcs: {
       host: 'github',

@@ -68,7 +68,7 @@ When('the project is scaffolded', async function () {
     node_modules: stubbedNodeModules
   });
 
-  this.result = await scaffold();
+  this.result = await scaffold({projectRoot: this.projectRoot});
 });
 
 When('the project is lifted', async function () {

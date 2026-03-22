@@ -71,10 +71,12 @@ import {scaffold, lift} from '@form8ion/codecov';
 
 ```javascript
 (async () => {
-  await scaffold();
+  const projectRoot = process.cwd();
+
+  await scaffold({projectRoot});
 
   await lift({
-    projectRoot: process.cwd(),
+    projectRoot,
     packageManager: packageManagers.NPM,
     vcs: {
       host: 'github',
