@@ -20,8 +20,15 @@ async function assertCodecovActionFoundTimes(projectRoot, expectedOccurrencesCou
     + `but was included ${codecovActionOccurrencesCount} times`
   );
   if (1 === expectedOccurrencesCount) {
-    // eslint-disable-next-line no-template-curly-in-string
-    assert.deepEqual(codecovActionOccurrences[0].with, {token: '${{ secrets.CODECOV_TOKEN }}'});
+    const codecovActionOccurrence = codecovActionOccurrences[0];
+
+    assert.equal(codecovActionOccurrence.name, 'Upload unit test coverage to Codecov');
+    assert.deepEqual(codecovActionOccurrence.with, {
+      // eslint-disable-next-line no-template-curly-in-string
+      token: '${{ secrets.CODECOV_TOKEN }}',
+      flags: 'unit',
+      report_type: 'coverage'
+    });
   }
 }
 

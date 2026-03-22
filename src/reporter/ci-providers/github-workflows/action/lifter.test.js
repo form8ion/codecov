@@ -8,10 +8,13 @@ describe('action lifter', () => {
     const existingAction = any.simpleObject();
 
     expect(liftAction(existingAction)).toEqual({
+      name: 'Upload unit test coverage to Codecov',
       ...existingAction,
       with: {
         // eslint-disable-next-line no-template-curly-in-string
-        token: '${{ secrets.CODECOV_TOKEN }}'
+        token: '${{ secrets.CODECOV_TOKEN }}',
+        flags: 'unit',
+        report_type: 'coverage'
       }
     });
   });
