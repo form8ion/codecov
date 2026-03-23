@@ -4,11 +4,11 @@ import {describe, expect, it, vi} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
-import {removeCodecovActionFrom} from './codecov-action.js';
+import {remove as removeCodecovActionFrom} from './action/index.js';
 import remove from './remover.js';
 
 vi.mock('@form8ion/github-workflows-core');
-vi.mock('./codecov-action.js');
+vi.mock('./action/index.js');
 
 describe('action remover', () => {
   it('should remove the action from the workflow', async () => {

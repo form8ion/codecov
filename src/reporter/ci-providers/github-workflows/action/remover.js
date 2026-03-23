@@ -1,6 +1,6 @@
 import {removeActionFromJobs} from '@form8ion/github-workflows-core';
-import {ACTION_NAME} from './action/constants.js';
+import {ACTION_NAME} from './constants.js';
 
-export function removeCodecovActionFrom(jobs) {
+export default function removeCodecovActionFrom(jobs) {
   return removeActionFromJobs(jobs, ACTION_NAME);
 }
