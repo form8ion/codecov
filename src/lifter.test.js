@@ -4,11 +4,13 @@ import {expect, it, vi, describe} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
+import {scaffold as scaffoldConfig} from './config/index.js';
 import {scaffold as scaffoldBadge} from './badge/index.js';
 import {lift as liftReporting} from './reporter/index.js';
 import {lift} from './lifter.js';
 
 vi.mock('deepmerge');
+vi.mock('./config/index.js');
 vi.mock('./badge/index.js');
 vi.mock('./reporter/index.js');
 
@@ -25,5 +27,7 @@ describe('lifter', () => {
     when(deepmerge.all).calledWith([reportingResults, badgeResults]).thenReturn(mergedResults);
 
     expect(await lift({projectRoot, packageManager, vcs})).toEqual(mergedResults);
+
+    expect(scaffoldConfig).toHaveBeenCalledWith({projectRoot});
   });
 });

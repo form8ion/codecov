@@ -82,7 +82,8 @@ When('the project is lifted', async function () {
     node_modules: stubbedNodeModules,
     'package.json': JSON.stringify({
       scripts: {...this.legacyReporting && {'coverage:report': any.string()}}
-    })
+    }),
+    ...this.configExists && {'.codecov.yml': JSON.stringify(any.simpleObject())}
   });
 
   this.result = await lift({
