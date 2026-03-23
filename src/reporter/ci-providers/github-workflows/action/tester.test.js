@@ -1,8 +1,8 @@
 import {describe, it, expect} from 'vitest';
 import any from '@travi/any';
 
-import {ACTION_NAME} from '../codecov-action.js';
 import stepIsCodecovAction from './tester.js';
+import {ACTION_NAME} from './constants.js';
 
 describe('action tester', () => {
   it('should return `false` if the step does not use an action', async () => {

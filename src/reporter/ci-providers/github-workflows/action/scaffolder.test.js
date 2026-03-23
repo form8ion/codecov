@@ -1,7 +1,7 @@
 import {describe, it, expect} from 'vitest';
 
-import {ACTION_NAME} from '../codecov-action.js';
 import scaffoldAction from './scaffolder.js';
+import {ACTION_NAME} from './constants.js';
 
 describe('codecov action scaffolder', () => {
   it('should scaffold the codecov action', async () => {

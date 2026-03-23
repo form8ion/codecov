@@ -4,7 +4,8 @@ import {describe, expect, it, vi} from 'vitest';
 import {when} from 'vitest-when';
 import any from '@travi/any';
 
-import {ACTION_NAME, removeCodecovActionFrom} from './codecov-action.js';
+import {removeCodecovActionFrom} from './codecov-action.js';
+import {ACTION_NAME} from './action/constants.js';
 
 vi.mock('@form8ion/github-workflows-core');
 

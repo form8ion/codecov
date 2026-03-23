@@ -1,4 +1,4 @@
-import {ACTION_NAME} from '../codecov-action.js';
+import {ACTION_NAME} from './constants.js';
 
 export default function stepIsCodecovAction(step) {
   if (!step.uses) return false;
