@@ -26,11 +26,21 @@ jobs:
           node-version-file: .nvmrc
       - run: npm clean-install
       - run: npm test
+      - name: Upload unit test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./unit.junit.xml
+          disable_search: true
+          flags: unit
+          report_type: test_results
       - name: Upload unit test coverage to Codecov
         uses: codecov/codecov-action@1af58845a975a7985b0beb0cbe6fbbb71a41dbad # v5.5.3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/unit/lcov.info
+          disable_search: true
           flags: unit
           report_type: coverage
   verify-matrix:
