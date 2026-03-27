@@ -12,7 +12,7 @@ Then('the coverage badge will be defined', async function () {
   assert.deepEqual(
     badges.status.coverage,
     {
-      img: `https://img.shields.io/codecov/c/${this.vcsHost}/${this.vcsOwner}/${this.vcsName}?logo=codecov${
+      img: `https://img.shields.io/codecov/c/${this.vcsHost}/${this.vcsOwner}/${this.vcsName}/master?logo=codecov${
         'Private' === this.visibility ? `&token=${this.imageToken}` : ''
       }`,
       link: `https://codecov.io/${this.vcsHost}/${this.vcsOwner}/${this.vcsName}`,

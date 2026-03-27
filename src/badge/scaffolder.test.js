@@ -22,7 +22,7 @@ describe('badge scaffolder', () => {
     const {badges} = await scaffold({vcs});
 
     expect(badges.status.coverage).toEqual({
-      img: `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}?logo=codecov`,
+      img: `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}/master?logo=codecov`,
       link: `https://codecov.io/${vcsHost}/${vcsOwner}/${vcsName}`,
       text: 'Codecov'
     });
@@ -36,7 +36,7 @@ describe('badge scaffolder', () => {
     const {badges} = await scaffold({vcs, apiAccessToken});
 
     expect(badges.status.coverage.img)
-      .toEqual(`https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}?logo=codecov&token=${token}`);
+      .toEqual(`https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}/master?logo=codecov&token=${token}`);
   });
 
   it('should not define the badge if shields.io badge does not support the host', async () => {
