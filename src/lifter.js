@@ -7,7 +7,7 @@ import {lift as liftReporting} from './reporter/index.js';
 export async function lift({projectRoot, packageManager, vcs}) {
   const [reportingResults, badgeResults] = await Promise.all([
     liftReporting({projectRoot, packageManager}),
-    scaffoldBadge({vcs}),
+    scaffoldBadge({vcs: {...vcs, defaultBranch: 'master'}}),
     scaffoldConfig({projectRoot})
   ]);
 

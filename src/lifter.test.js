@@ -23,7 +23,7 @@ describe('lifter', () => {
     const badgeResults = any.simpleObject();
     const mergedResults = any.simpleObject();
     when(liftReporting).calledWith({projectRoot, packageManager}).thenResolve(reportingResults);
-    when(scaffoldBadge).calledWith({vcs}).thenResolve(badgeResults);
+    when(scaffoldBadge).calledWith({vcs: {...vcs, defaultBranch: 'master'}}).thenResolve(badgeResults);
     when(deepmerge.all).calledWith([reportingResults, badgeResults]).thenReturn(mergedResults);
 
     expect(await lift({projectRoot, packageManager, vcs})).toEqual(mergedResults);
