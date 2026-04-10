@@ -1,4 +1,4 @@
-import {fileTypes, loadConfigFile} from '@form8ion/core';
+import {fileExists, fileTypes, loadConfigFile} from '@form8ion/core';
 
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
@@ -20,4 +20,8 @@ Then('the config file is created', async function () {
   const {comment: {layout}} = await loadConfigFile({path: this.projectRoot, name: '.codecov', format: fileTypes.YAML});
 
   assert.equal(layout, 'reach,diff,flags,tree');
+});
+
+Then('no config is created', async function () {
+  assert.isFalse(await fileExists(`${this.projectRoot}/.codecov.yml`));
 });

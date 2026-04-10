@@ -65,6 +65,7 @@ When('the project is scaffolded', async function () {
   const {scaffold} = await import('@form8ion/codecov');
 
   stubbedFs({
+    ...'github' === this.vcsHost && {'.github': {}},
     node_modules: stubbedNodeModules
   });
 
