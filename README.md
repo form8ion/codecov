@@ -170,7 +170,7 @@ $ npm test
 
 [coverage-link]: https://codecov.io/github/form8ion/codecov
 
-[coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/codecov?logo=codecov
+[coverage-badge]: https://img.shields.io/codecov/c/github/form8ion/codecov/master?logo=codecov
 
 [license-link]: LICENSE
 
