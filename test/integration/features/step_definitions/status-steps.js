@@ -1,6 +1,10 @@
 import {Given, Then} from '@cucumber/cucumber';
 import {assert} from 'chai';
 
+function badgeHostFrom(vcsHost) {
+  return vcsHost.split('.')[0];
+}
+
 Given('the Codecov badge already exists in the readme', async function () {
   // Write code here that turns the phrase above into concrete actions
   return 'pending';
@@ -12,10 +16,12 @@ Then('the coverage badge will be defined', async function () {
   assert.deepEqual(
     badges.status.coverage,
     {
-      img: `https://img.shields.io/codecov/c/${this.vcsHost}/${this.vcsOwner}/${this.vcsName}/master?logo=codecov${
+      img: `https://img.shields.io/codecov/c/${
+        badgeHostFrom(this.vcsHost)
+      }/${this.vcsOwner}/${this.vcsName}/master?logo=codecov${
         'Private' === this.visibility ? `&token=${this.imageToken}` : ''
       }`,
-      link: `https://codecov.io/${this.vcsHost}/${this.vcsOwner}/${this.vcsName}`,
+      link: `https://codecov.io/${badgeHostFrom(this.vcsHost)}/${this.vcsOwner}/${this.vcsName}`,
       text: 'Codecov'
     }
   );

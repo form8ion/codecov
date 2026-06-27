@@ -8,7 +8,8 @@ import {scaffold} from './scaffolder.js';
 vi.mock('./repository-details-fetcher.js');
 
 describe('badge scaffolder', () => {
-  const vcsHost = any.fromList(['github', 'gitlab', 'bitbucket']);
+  const vcsHost = any.fromList(['github.com', 'gitlab.com', 'bitbucket.org']);
+  const badgeHost = vcsHost.split('.')[0];
   const vcsOwner = any.word();
   const vcsName = any.word();
   const defaultBranch = any.word();
@@ -24,8 +25,8 @@ describe('badge scaffolder', () => {
     const {badges} = await scaffold({vcs});
 
     expect(badges.status.coverage).toEqual({
-      img: `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}/${defaultBranch}?logo=codecov`,
-      link: `https://codecov.io/${vcsHost}/${vcsOwner}/${vcsName}`,
+      img: `https://img.shields.io/codecov/c/${badgeHost}/${vcsOwner}/${vcsName}/${defaultBranch}?logo=codecov`,
+      link: `https://codecov.io/${badgeHost}/${vcsOwner}/${vcsName}`,
       text: 'Codecov'
     });
   });
@@ -38,12 +39,14 @@ describe('badge scaffolder', () => {
     const {badges} = await scaffold({vcs, apiAccessToken});
 
     expect(badges.status.coverage.img).toEqual(
-      `https://img.shields.io/codecov/c/${vcsHost}/${vcsOwner}/${vcsName}/${defaultBranch}?logo=codecov&token=${token}`
+      `https://img.shields.io/codecov/c/${badgeHost}/${vcsOwner}/${vcsName}/${defaultBranch}?logo=codecov&token=${
+        token
+      }`
     );
   });
 
   it('should not define the badge if shields.io badge does not support the host', async () => {
-    const {badges} = await scaffold({vcs: {host: any.word()}});
+    const {badges} = await scaffold({vcs: {host: `${any.word()}.com`}});
 
     expect(badges).toBe(undefined);
   });
