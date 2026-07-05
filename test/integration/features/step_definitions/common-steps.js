@@ -81,9 +81,11 @@ When('the project is lifted', async function () {
   stubbedFs({
     ...stubGithubWorkflows(this.githubWorkflow, this.legacyReporting, this.githubAction, this.githubActionWithoutToken),
     node_modules: stubbedNodeModules,
-    'package.json': JSON.stringify({
-      scripts: {...this.legacyReporting && {'coverage:report': any.string()}}
-    }),
+    ...!this.nonJsLanguage && {
+      'package.json': JSON.stringify({
+        scripts: {...this.legacyReporting && {'coverage:report': any.string()}}
+      })
+    },
     ...this.configExists && {'.codecov.yml': JSON.stringify(any.simpleObject())}
   });
 

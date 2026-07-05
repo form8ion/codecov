@@ -1,27 +1,13 @@
-import {promises as fs} from 'node:fs';
-import {writePackageJson} from '@form8ion/javascript-core';
-
-import {execa} from 'execa';
 import {lift as liftCiProvider, test as ciProviderIsLiftable} from './ci-providers/index.js';
+import {remove as removeLegacyNodeReporter, test as legacyNodeReporterInUse} from './legacy/index.js';
 
 export default async function liftReporter({projectRoot, packageManager}) {
-  const pathToPackageJson = `${projectRoot}/package.json`;
-
-  const [ciProviderCanBeLifted, existingPackageContents] = await Promise.all([
-    ciProviderIsLiftable({projectRoot}),
-    fs.readFile(pathToPackageJson, 'utf-8')
-  ]);
-  const parsedPackageContents = JSON.parse(existingPackageContents);
-  const {scripts} = parsedPackageContents;
-  const {'coverage:report': reportCoverageScript, ...otherScripts} = scripts;
+  const ciProviderCanBeLifted = await ciProviderIsLiftable({projectRoot});
 
   if (ciProviderCanBeLifted) await liftCiProvider({projectRoot});
 
-  if (scripts['coverage:report']) {
-    parsedPackageContents.scripts = otherScripts;
-    await writePackageJson({projectRoot, config: parsedPackageContents});
-
-    await execa(packageManager, ['remove', 'codecov']);
+  if (await legacyNodeReporterInUse({projectRoot})) {
+    await removeLegacyNodeReporter({projectRoot, packageManager});
 
     return {
       ...!ciProviderCanBeLifted && {
