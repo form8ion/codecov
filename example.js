@@ -24,7 +24,7 @@ nock('https://codecov.io/')
     projectRoot,
     packageManager: packageManagers.NPM,
     vcs: {
-      host: 'github',
+      host: 'github.com',
       owner: 'foo',
       name: 'bar'
     }

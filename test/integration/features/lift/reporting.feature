@@ -6,6 +6,12 @@ Feature: Lift Reporting
     Then the legacy node reporter is removed
     And a next-step is returned for configuring CI reporting
 
+  Scenario: Non-JavaScript project
+    Given the legacy node reporter is configured
+    And the project is not a JavaScript project
+    When the project is lifted
+    Then no next-step is returned for configuring CI reporting
+
   Scenario: GitHub Workflow as CI
     Given CI is a GitHub workflow
     When the project is lifted

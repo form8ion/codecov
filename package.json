@@ -5,7 +5,7 @@
   "version": "0.0.0-semantically-released",
   "type": "module",
   "engines": {
-    "node": "^20.19.0 || >=22.14.0"
+    "node": "^22.22.2 || >=24.15"
   },
   "author": "Matt Travi <npm@travi.org> (https://matt.travi.org)",
   "repository": "form8ion/codecov",
@@ -56,13 +56,13 @@
   },
   "packageManager": "npm@11.18.0+sha512.4faecce0be70366d1c67b1012c4adc1246354a6cc45bf589f92003073b05518d547403df1475c542d67a4845e22b4fafcd7cac0af02c7a96cc6814f09eb003fb",
   "dependencies": {
-    "@form8ion/core": "^4.6.1",
+    "@form8ion/core": "^5.0.0-beta.15",
     "@form8ion/github-core": "^2.0.0",
     "@form8ion/github-workflows-core": "^6.0.0-beta.1",
     "@form8ion/javascript-core": "^13.0.0",
     "deepmerge": "^4.3.1",
     "execa": "^9.0.0",
-    "got": "^14.6.6"
+    "got": "^15.0.0"
   },
   "devDependencies": {
     "@codecov/rollup-plugin": "2.0.1",
@@ -82,7 +82,7 @@
     "husky": "9.1.7",
     "js-yaml": "5.2.1",
     "lockfile-lint": "5.0.0",
-    "ls-engines": "0.9.4",
+    "ls-engines": "0.10.1",
     "mock-fs": "5.5.0",
     "nock": "14.0.16",
     "npm-run-all2": "9.0.2",
