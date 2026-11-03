@@ -77,7 +77,7 @@
     "@vitest/coverage-v8": "5.0.5",
     "chai": "6.3.0",
     "cz-conventional-changelog": "3.3.0",
-    "gplint": "2.6.0",
+    "gplint": "2.6.1",
     "http-status-codes": "2.3.0",
     "husky": "9.1.7",
     "js-yaml": "5.5.0",
